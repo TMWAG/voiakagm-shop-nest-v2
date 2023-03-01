@@ -4,7 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: `.local.env`,
+      envFilePath: `.env`,
     }),
   ],
   controllers: [],
