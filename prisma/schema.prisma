@@ -20,9 +20,10 @@ model User {
   password      String  @map("user_password")
   vkLink        String? @map("vk_link")
   tgLink        String? @map("tg_link")
-  feedbacks     Feedback[]
+  feedbacks     ProductFeedback[]
   userAddresses UserAddress[]
   orders        Order[]
+  @@map("users")
 }
 
 enum Role {
@@ -31,7 +32,7 @@ enum Role {
   ADMIN
 }
 
-model Feedback {
+model ProductFeedback {
   id        Int     @default(autoincrement()) @id
   user      User    @relation(fields: [userId], references: [id])
   userId    Int
@@ -39,6 +40,7 @@ model Feedback {
   productId Int
   text      String  @map("feedback_text")
   rating    Int     @map("feedback_rating")
+  @@map("product_feegbacks")
 }
 
 model Product {
@@ -53,17 +55,19 @@ model Product {
   description     String
   amount          Int
   sold            Int
-  feedbacks       Feedback[]
-  pictures        Picture[]
-  characteristics Characteristic[]
+  feedbacks       ProductFeedback[]
+  pictures        ProductPicture[]
+  characteristics ProductCharacteristic[]
   orderedProducts OrderedProduct[]
+  @@map("products")
 }
 
-model Picture {
+model ProductPicture {
   id          Int       @default(autoincrement()) @id
   product     Product   @relation(fields: [productId], references: [id])
   productId   Int
   filename    String    @map("picture_filename")
+  @@map("product_pictures")
 }
 
 model Vendor {
@@ -71,30 +75,34 @@ model Vendor {
   name              String    @map("vendor_name")
   products          Product[]
   recommendations   Recommendation[]
+  @@map("vendors")
 }
 
 model Category {
   id          Int         @default(autoincrement()) @id
   name        String      @map("category_name")
   products    Product[]
-  parameters  Parameter[]
+  parameters  ProductParameter[]
+  @@map("product_categories")
 }
 
-model Parameter {
+model ProductParameter {
   id              Int       @default(autoincrement()) @id
   name            String    @map("parameter_name")
   category        Category  @relation(fields: [categoryId], references: [id])
   categoryId      Int
-  characteristics Characteristic[]
+  characteristics ProductCharacteristic[]
+  @@map("product_parameters")
 }
 
-model Characteristic {
+model ProductCharacteristic {
   id          Int       @default(autoincrement()) @id
-  parameter   Parameter @relation(fields: [parameterId], references: [id])
+  parameter   ProductParameter @relation(fields: [parameterId], references: [id])
   parameterId Int
   product     Product   @relation(fields: [productId], references: [id])
   productId   Int
   value       String    @map("characteristic_value")
+  @@map("product_characteristics")
 }
 
 model UserAddress {
@@ -114,6 +122,7 @@ model Recommendation {
   comment   String  @map("recommendation_comment")
   vendor    Vendor  @relation(fields: [vendorId], references: [id])
   vendorId  Int
+  @@map("recommendations")
 }
 
 model Order {
@@ -128,6 +137,7 @@ model Order {
   deliveryService   DeliveryService @relation(fields: [deliveryServiceId], references: [id])
   deliveryServiceId Int
   orderedProducts   OrderedProduct[]
+  @@map("orders")
 }
 
 enum OrderStatus {
@@ -143,6 +153,7 @@ model DeliveryService {
   id      Int       @default(autoincrement()) @id
   name    String    @map("delivery_service_name")
   orders  Order[]
+  @@map("delivery_services")
 }
 
 model OrderedProduct {
@@ -152,4 +163,5 @@ model OrderedProduct {
   product   Product   @relation(fields: [productId], references: [id])
   productId Int
   amount    Int
+  @@map("ordered_products")
 }
