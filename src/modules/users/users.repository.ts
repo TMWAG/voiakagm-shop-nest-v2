@@ -10,7 +10,7 @@ export class UsersRepository {
     return this.prisma.user.create({ data });
   }
 
-  async getUserById(id: number): Promise<User | NotFoundException> {
+  async getUserById(id: number): Promise<User | never> {
     return this.prisma.user.findFirstOrThrow({ where: { id } });
   }
 
