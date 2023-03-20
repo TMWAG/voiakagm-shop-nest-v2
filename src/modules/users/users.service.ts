@@ -26,4 +26,13 @@ export class UsersService {
   remove(id: number) {
     return `This action removes a #${id} user`;
   }
+
+  //utils
+  async isUserEmailNew(email: string): Promise<boolean> {
+    return Boolean(!(await this.repository.getUserByEmail(email)));
+  }
+
+  async isUserPhoneNew(phone: string): Promise<boolean> {
+    return Boolean(!(await this.repository.getUserByPhone(phone)));
+  }
 }
