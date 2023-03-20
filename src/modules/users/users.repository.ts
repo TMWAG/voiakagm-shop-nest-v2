@@ -22,6 +22,12 @@ export class UsersRepository {
     return await this.prisma.user.findFirstOrThrow({ where: { email } });
   }
 
+  async getAllUsers(): Promise<Partial<User>[]> {
+    return await this.prisma.user.findMany({
+      select: { password: false },
+    });
+  }
+
   async updateUserTgLinkById(
     tgLink: string,
     id: number,
