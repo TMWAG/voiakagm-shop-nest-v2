@@ -20,6 +20,7 @@ model User {
   password      String  @map("user_password")
   vkLink        String? @map("vk_link")
   tgLink        String? @map("tg_link")
+  isActive      Boolean @default(false) @map("is_active")
   feedbacks     ProductFeedback[]
   userAddresses UserAddress[]
   orders        Order[]
