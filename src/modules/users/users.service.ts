@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { randomUUID } from 'crypto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersRepository } from './users.repository';
 
@@ -6,10 +7,12 @@ import { UsersRepository } from './users.repository';
 export class UsersService {
   constructor(private repository: UsersRepository) {}
 
+  //create
   async create(createUserDto: CreateUserDto) {
     return await this.repository.createUser(createUserDto);
   }
 
+  //get
   async getAll() {
     return await this.repository.getAllUsers();
   }
@@ -28,10 +31,30 @@ export class UsersService {
     return user;
   }
 
-  async getUserByEmailOrThrowError(email: string) {
+  async getOneUserByEmailOrThrowError(email: string) {
     const user = await this.repository.getUserByEmail(email);
     if (!user) throw new NotFoundException();
     return user;
+  }
+
+  async getOneUserByTokenOrThrowError(token: string) {
+    const user = await this.repository.getUserByToken(token);
+    if (!user) throw new NotFoundException();
+    return user;
+  }
+
+  //update
+  async updateUserTokenById(id: number) {
+    const newToken = randomUUID();
+    return await this.repository.updateUserTokenById(id, newToken);
+  }
+
+  async activateUserByToken(token: string) {
+    return await this.repository.activateUserByToken(token);
+  }
+
+  async updateUserPasswordById(id: number, password: string) {
+    return await this.repository.updateUserPasswordById(id, password);
   }
 
   //utils
