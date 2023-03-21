@@ -21,6 +21,7 @@ model User {
   vkLink        String? @map("vk_link")
   tgLink        String? @map("tg_link")
   isActive      Boolean @default(false) @map("is_active")
+  token         String  @default(uuid())
   feedbacks     ProductFeedback[]
   userAddresses UserAddress[]
   orders        Order[]
