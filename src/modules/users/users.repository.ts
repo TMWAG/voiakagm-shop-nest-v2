@@ -13,15 +13,15 @@ export class UsersRepository {
 
   //read
   async getUserById(id: number): Promise<User | never> {
-    return await this.prisma.user.findFirstOrThrow({ where: { id } });
+    return await this.prisma.user.findFirst({ where: { id } });
   }
 
   async getUserByPhone(phone: string): Promise<User | never> {
-    return await this.prisma.user.findFirstOrThrow({ where: { phone } });
+    return await this.prisma.user.findFirst({ where: { phone } });
   }
 
   async getUserByEmail(email: string): Promise<User | never> {
-    return await this.prisma.user.findFirstOrThrow({ where: { email } });
+    return await this.prisma.user.findFirst({ where: { email } });
   }
 
   async getAllUsers(): Promise<Partial<User>[]> {
