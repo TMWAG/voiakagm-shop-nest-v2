@@ -24,6 +24,10 @@ export class UsersRepository {
     return await this.prisma.user.findFirst({ where: { email } });
   }
 
+  async getUserByToken(token: string): Promise<User | never> {
+    return await this.prisma.user.findFirst({ where: { token } });
+  }
+
   async getAllUsers(): Promise<Partial<User>[]> {
     return await this.prisma.user.findMany({
       select: { password: false },
@@ -51,8 +55,8 @@ export class UsersRepository {
   }
 
   async updateUserPasswordById(
-    password: string,
     id: number,
+    password: string,
   ): Promise<User | never> {
     return this.prisma.user.update({ where: { id }, data: { password } });
   }
@@ -71,10 +75,17 @@ export class UsersRepository {
     return await this.prisma.user.update({ where: { id }, data: { vkLink } });
   }
 
-  async activateUserById(id: number): Promise<User | never> {
+  async activateUserByToken(token: string): Promise<User | never> {
+    return await this.prisma.user.update({
+      where: { token },
+      data: { isActive: true },
+    });
+  }
+
+  async updateUserTokenById(id: number, token: string): Promise<User> {
     return await this.prisma.user.update({
       where: { id },
-      data: { isActive: true },
+      data: { token },
     });
   }
 
