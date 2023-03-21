@@ -6,11 +6,11 @@ import { User } from '@prisma/client';
 export class MailService {
   constructor(private readonly mailerService: MailerService) {}
 
-  async sendUserConfirmationEmail(user: User, token: string): Promise<void> {
+  async sendUserConfirmationEmail(user: User): Promise<void> {
     try {
-      const url = `http://${String(
-        process.env.HOST_URL,
-      )}/auth/confirm?token=${token}`;
+      const url = `http://${String(process.env.HOST_URL)}/auth/confirm?token=${
+        user.token
+      }`;
       await this.mailerService.sendMail({
         to: user.email,
         subject: 'Подтверждение почты',
@@ -25,7 +25,7 @@ export class MailService {
     }
   }
 
-  async sendSendRestorationEmail(user: User): Promise<void> {
+  async sendRestorationEmail(user: User): Promise<void> {
     try {
       const url = `http://${String(
         process.env.HOST_URL,
