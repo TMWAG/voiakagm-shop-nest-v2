@@ -30,7 +30,17 @@ export class UsersRepository {
 
   async getAllUsers(): Promise<Partial<User>[]> {
     return await this.prisma.user.findMany({
-      select: { password: false },
+      select: {
+        id: true,
+        name: true,
+        surname: true,
+        email: true,
+        phone: true,
+        role: true,
+        isActive: true,
+        tgLink: true,
+        vkLink: true,
+      },
     });
   }
 
