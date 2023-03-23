@@ -45,22 +45,22 @@ export class UsersRepository {
   }
 
   //update
-  async updateUserNameById(name: string, id: number): Promise<User | never> {
+  async updateUserNameById(id: number, name: string): Promise<User | never> {
     return this.prisma.user.update({ where: { id }, data: { name } });
   }
 
   async updateUserSurnameById(
-    surname: string,
     id: number,
+    surname: string,
   ): Promise<User | never> {
     return this.prisma.user.update({ where: { id }, data: { surname } });
   }
 
-  async updateUserPhoneById(phone: string, id: number): Promise<User | never> {
+  async updateUserPhoneById(id: number, phone: string): Promise<User | never> {
     return this.prisma.user.update({ where: { id }, data: { phone } });
   }
 
-  async updateUserRoleById(role: Role, id: number): Promise<User | never> {
+  async updateUserRoleById(id: number, role: Role): Promise<User | never> {
     return this.prisma.user.update({ where: { id }, data: { role } });
   }
 
@@ -72,15 +72,15 @@ export class UsersRepository {
   }
 
   async updateUserTgLinkById(
-    tgLink: string,
     id: number,
+    tgLink: string,
   ): Promise<User | never> {
     return await this.prisma.user.update({ where: { id }, data: { tgLink } });
   }
 
   async updateUserVkLinkById(
-    vkLink: string,
     id: number,
+    vkLink: string,
   ): Promise<User | never> {
     return await this.prisma.user.update({ where: { id }, data: { vkLink } });
   }
