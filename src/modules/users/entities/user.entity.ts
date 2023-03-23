@@ -1,7 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
 
-export class GetUser {
+export class User {
+  @ApiProperty()
+  id: number;
+
   @ApiProperty()
   name: string;
 
@@ -9,13 +12,16 @@ export class GetUser {
   surname: string;
 
   @ApiProperty()
-  role: Role;
+  email: string;
 
   @ApiProperty()
   phone: string;
 
   @ApiProperty()
-  email: string;
+  role: Role;
+
+  @ApiProperty()
+  isActive: boolean;
 
   @ApiProperty()
   tgLink: string;
