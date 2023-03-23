@@ -8,9 +8,9 @@ export class MailService {
 
   async sendUserConfirmationEmail(user: User): Promise<void> {
     try {
-      const url = `http://${String(process.env.HOST_URL)}/auth/confirm?token=${
-        user.token
-      }`;
+      const url = `http://${String(
+        process.env.HOST_URL,
+      )}/api/auth/confirm_email?token=${user.token}`;
       await this.mailerService.sendMail({
         to: user.email,
         subject: 'Подтверждение почты',
@@ -29,7 +29,7 @@ export class MailService {
     try {
       const url = `http://${String(
         process.env.HOST_URL,
-      )}/auth/restore_pass?token=${user.token}`;
+      )}/api/auth/restore_password?token=${user.token}`;
       await this.mailerService.sendMail({
         to: user.email,
         subject: 'Смена пароля',
