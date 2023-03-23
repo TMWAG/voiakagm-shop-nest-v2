@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginUserByEmailDto } from './dto/login-user-by-email.dto';
 import { QueryTokenDto } from './dto/query-token.dto';
@@ -30,7 +30,7 @@ export class AuthController {
     return this.authService.resetPasswordByToken(dto, token.token);
   }
 
-  @Post('confirm_email')
+  @Get('confirm_email')
   confirmEmail(@Query() dto: QueryTokenDto) {
     return this.authService.activateUserAndUpdateToken(dto);
   }
