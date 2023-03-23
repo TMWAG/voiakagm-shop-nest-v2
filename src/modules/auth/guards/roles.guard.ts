@@ -1,4 +1,9 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
@@ -21,10 +26,11 @@ export class RolesGuard implements CanActivate {
     if (!requiredRoles) {
       return true;
     }
-    const token = context
-      .switchToHttp()
-      .getRequest()
-      .headers.authorization.split(' ')[1];
+    const authHeader = context.switchToHttp().getRequest()
+      .headers.authorization;
+    if (!authHeader) throw new UnauthorizedException();
+    const [bearer, token] = authHeader.split(' ');
+    if (bearer !== 'Bearer' || !token) throw new UnauthorizedException();
     const user: Partial<User> = this.jwtService.verify(token, {
       secret: process.env.SECRET_KEY,
     });
