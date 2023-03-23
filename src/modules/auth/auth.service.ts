@@ -31,7 +31,7 @@ export class AuthService {
       ...dto,
       password: hashedPassword,
     });
-    await this.mailService.sendUserConfirmationEmail(user);
+    this.mailService.sendUserConfirmationEmail(user);
     return true;
   }
 
@@ -57,13 +57,13 @@ export class AuthService {
     const user = await this.usersService.getOneUserByEmailOrThrowError(
       dto.email,
     );
-    await this.mailService.sendRestorationEmail(user);
+    this.mailService.sendRestorationEmail(user);
     return true;
   }
 
   async resetPasswordByToken(dto: ResetPasswordDto, token: string) {
     if (dto.password !== dto.passwordConfirmation)
-      throw new BadRequestException();
+      throw new BadRequestException('Пароли не совпадают');
     const hashedPassword = await bcrypt.hash(dto.password, 5);
     const user = await this.usersService.getOneUserByTokenOrThrowError(token);
     await this.usersService.updateUserPasswordById(user.id, hashedPassword);
