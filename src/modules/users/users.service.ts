@@ -27,19 +27,21 @@ export class UsersService {
 
   async getOneUserByIdOrThrowError(id: number) {
     const user = await this.repository.getUserById(id);
-    if (!user) throw new NotFoundException();
+    if (!user)
+      throw new NotFoundException(`Пользователь с Id: ${id} не найден`);
     return user;
   }
 
   async getOneUserByEmailOrThrowError(email: string) {
     const user = await this.repository.getUserByEmail(email);
-    if (!user) throw new NotFoundException();
+    if (!user)
+      throw new NotFoundException(`Пользователь с почтой ${email} не найден`);
     return user;
   }
 
   async getOneUserByTokenOrThrowError(token: string) {
     const user = await this.repository.getUserByToken(token);
-    if (!user) throw new NotFoundException();
+    if (!user) throw new NotFoundException('Не удалось найти пользователя');
     return user;
   }
 
