@@ -8,6 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('VoiakaGM-shop-V2')
     .setDescription('Документация API')
     .setVersion('0.0.1')

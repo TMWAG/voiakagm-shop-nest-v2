@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiForbiddenResponse,
   ApiOkResponse,
   ApiOperation,
@@ -29,6 +30,7 @@ import { CategoryEntity } from './entities/category.entity';
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Добавление новой категории' })
   @ApiOkResponse({
     description: 'Успешное создание категории',
@@ -56,6 +58,7 @@ export class CategoryController {
     return this.categoryService.getAllCategories();
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Изменение названия категории' })
   @ApiOkResponse({
     description: 'Название успешно изменено',
@@ -71,6 +74,7 @@ export class CategoryController {
     return this.categoryService.updateCategoryNameById(dto);
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Удаление категории' })
   @ApiOkResponse({
     description: 'Категория успешно удалена',

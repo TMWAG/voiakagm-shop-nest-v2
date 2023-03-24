@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
@@ -27,6 +28,7 @@ import { UsersAddressesService } from './users-addresses.service';
 export class UsersAddressesController {
   constructor(private readonly userAddressesService: UsersAddressesService) {}
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Добавление нового адреса' })
   @ApiOkResponse({
     description: 'Новый адрес успешно создан',
@@ -40,6 +42,7 @@ export class UsersAddressesController {
     return this.userAddressesService.createUserAddress(user.id, dto);
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Получение всех адресов пользователя' })
   @ApiOkResponse({
     description: 'Возвращает массив адресов',
@@ -52,6 +55,7 @@ export class UsersAddressesController {
     return this.userAddressesService.getAllUserAddressesByUserId(user.id);
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Обновление адреса пользователя' })
   @ApiOkResponse({
     description: 'Адрес успешно обновлён',
@@ -65,6 +69,7 @@ export class UsersAddressesController {
     return this.userAddressesService.updateUserAddressById(user.id, dto);
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Удаление адреса пользователя' })
   @ApiOkResponse({
     description: 'Адрес успешно удалён',

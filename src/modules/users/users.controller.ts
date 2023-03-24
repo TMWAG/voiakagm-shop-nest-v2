@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
@@ -35,6 +36,7 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Получение всех пользователей' })
   @ApiOkResponse({
     description: 'Возвращает массив пользователей',
@@ -48,6 +50,7 @@ export class UsersController {
     return this.usersService.getAll();
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Изменение имени пользователя' })
   @ApiOkResponse({ description: 'Успешное изменение имени', type: User })
   @ApiBadRequestResponse({
@@ -64,6 +67,7 @@ export class UsersController {
     return this.usersService.updateUserNameById(user.id, dto);
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Изменение фамилии пользователя' })
   @ApiOkResponse({ description: 'Успешное изменение фамилии', type: User })
   @ApiBadRequestResponse({
@@ -80,6 +84,7 @@ export class UsersController {
     return this.usersService.updateUserSurnameById(user.id, dto);
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Изменение телефона пользователя' })
   @ApiOkResponse({ description: 'Успешное изменение телефона', type: User })
   @ApiBadRequestResponse({
@@ -96,6 +101,7 @@ export class UsersController {
     return this.usersService.updateUserPhoneById(user.id, dto);
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Изменение роли пользователя' })
   @ApiOkResponse({ description: 'Роль изменена успешно', type: User })
   @ApiBadRequestResponse({ description: 'Указанной роли нет' })
@@ -108,6 +114,7 @@ export class UsersController {
     return this.usersService.updateUserRoleById(dto);
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Изменение пароля пользователя' })
   @ApiOkResponse({ description: 'Пароль успешно изменён', type: User })
   @ApiBadRequestResponse({ description: 'Пароль и подтверждение не совпадают' })
@@ -122,6 +129,7 @@ export class UsersController {
     return this.usersService.updateUserPasswordById(user.id, dto);
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Добавление/изменение ссылки на ВК' })
   @ApiOkResponse({ description: 'Ссылка успешно изменена', type: User })
   @ApiBadRequestResponse({ description: 'Ссылка не указана' })
@@ -136,6 +144,7 @@ export class UsersController {
     return this.usersService.updateUserVkLinkById(user.id, dto);
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Добавление/изменение ссылки на телеграм' })
   @ApiOkResponse({ description: 'Ссылка успешно изменена', type: User })
   @ApiBadRequestResponse({ description: 'Ссылка не указана' })
@@ -150,6 +159,7 @@ export class UsersController {
     return this.usersService.updateUserTgLinkById(user.id, dto);
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Удаление пользователя' })
   @ApiOkResponse({ description: 'Пользователь успешно удалён', type: User })
   @ApiBadRequestResponse({ description: 'Не указан Id пользователя' })
