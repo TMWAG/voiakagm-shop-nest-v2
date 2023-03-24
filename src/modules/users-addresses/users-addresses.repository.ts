@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, UserAddress } from '@prisma/client';
+import { UserAddress } from '@prisma/client';
 import { PrismaService } from 'src/database/prisma.service';
 
 @Injectable()
@@ -8,9 +8,10 @@ export class UserAddressRepository {
 
   //create
   async createUserAddress(
-    data: Prisma.UserAddressCreateInput,
+    userId: number,
+    address: string,
   ): Promise<UserAddress> {
-    return await this.prisma.userAddress.create({ data });
+    return await this.prisma.userAddress.create({ data: { userId, address } });
   }
 
   //get
