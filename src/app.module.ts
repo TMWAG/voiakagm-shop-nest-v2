@@ -7,6 +7,7 @@ import { UsersAddressesModule } from './modules/users-addresses/users-addresses.
 import { CategoryModule } from './modules/category/category.module';
 import { VendorModule } from './modules/vendor/vendor.module';
 import { ParameterModule } from './modules/parameter/parameter.module';
+import { ProductModule } from './modules/product/product.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ParameterModule } from './modules/parameter/parameter.module';
     CategoryModule,
     VendorModule,
     ParameterModule,
+    ProductModule,
   ],
   controllers: [],
   providers: [],
