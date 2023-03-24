@@ -55,8 +55,8 @@ model Product {
   price           Int
   discount        Int?
   description     String
-  amount          Int
-  sold            Int
+  amount          Int?
+  sold            Int       @default(0)
   feedbacks       ProductFeedback[]
   pictures        ProductPicture[]
   characteristics ProductCharacteristic[]
