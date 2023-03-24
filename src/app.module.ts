@@ -4,6 +4,7 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { MailModule } from './modules/mail/mail.module';
 import { UsersAddressesModule } from './modules/users-addresses/users-addresses.module';
+import { CategoryModule } from './modules/category/category.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { UsersAddressesModule } from './modules/users-addresses/users-addresses.
     AuthModule,
     MailModule,
     UsersAddressesModule,
+    CategoryModule,
   ],
   controllers: [],
   providers: [],
