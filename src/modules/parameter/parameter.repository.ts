@@ -13,6 +13,7 @@ export class ParameterRepository {
   ): Promise<ProductParameter> {
     return await this.prisma.productParameter.create({
       data: { name, categoryId },
+      include: { category: true },
     });
   }
 
@@ -44,6 +45,7 @@ export class ParameterRepository {
     return await this.prisma.productParameter.update({
       where: { id },
       data: { name },
+      include: { category: true },
     });
   }
 
@@ -54,11 +56,15 @@ export class ParameterRepository {
     return await this.prisma.productParameter.update({
       where: { id },
       data: { categoryId },
+      include: { category: true },
     });
   }
 
   //delete
   async deleteParameterById(id: number): Promise<ProductParameter> {
-    return await this.prisma.productParameter.delete({ where: { id } });
+    return await this.prisma.productParameter.delete({
+      where: { id },
+      include: { category: true },
+    });
   }
 }
