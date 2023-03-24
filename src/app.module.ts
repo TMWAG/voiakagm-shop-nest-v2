@@ -6,6 +6,7 @@ import { MailModule } from './modules/mail/mail.module';
 import { UsersAddressesModule } from './modules/users-addresses/users-addresses.module';
 import { CategoryModule } from './modules/category/category.module';
 import { VendorModule } from './modules/vendor/vendor.module';
+import { ParameterModule } from './modules/parameter/parameter.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { VendorModule } from './modules/vendor/vendor.module';
     UsersAddressesModule,
     CategoryModule,
     VendorModule,
+    ParameterModule,
   ],
   controllers: [],
   providers: [],
