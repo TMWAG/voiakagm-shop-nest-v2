@@ -7,6 +7,9 @@ export const dtoValidationError = {
     phone: 'Должен быть номером телефона',
     positive: 'Не может быть отрицательным',
     uuidV4: 'Должен быть uuid v4',
+    partOfEnum: (en: string[]): string => {
+      return `Должно иметь одно из следующих значений: ${en.join(', ')}`;
+    },
   },
   length: {
     min: (min: number): string => {
