@@ -18,6 +18,7 @@ export class GetAllProductsDto extends PaginationDto {
     nullable: true,
     default: sortTypes[0],
     enum: sortTypes,
+    required: false,
   })
   @IsOptional()
   @Type(() => String)
@@ -29,6 +30,7 @@ export class GetAllProductsDto extends PaginationDto {
     example: true,
     description: 'Состояние товара',
     nullable: true,
+    required: false,
   })
   @IsOptional()
   @Type(() => Boolean)
@@ -40,6 +42,7 @@ export class GetAllProductsDto extends PaginationDto {
     description: 'Только товары по скидке',
     nullable: true,
     default: false,
+    required: false,
   })
   @IsOptional()
   @Type(() => Boolean)
@@ -51,6 +54,7 @@ export class GetAllProductsDto extends PaginationDto {
     description: 'Минимальная цена',
     nullable: true,
     default: 0,
+    required: false,
   })
   @IsOptional()
   @Type(() => Number)
@@ -62,6 +66,7 @@ export class GetAllProductsDto extends PaginationDto {
     description: 'Максимальная цена',
     nullable: true,
     default: undefined,
+    required: false,
   })
   @IsOptional()
   @Type(() => Number)
@@ -73,6 +78,7 @@ export class GetAllProductsDto extends PaginationDto {
     description: 'Id производителя',
     nullable: true,
     default: undefined,
+    required: false,
   })
   @IsOptional()
   @Type(() => Number)
@@ -84,6 +90,7 @@ export class GetAllProductsDto extends PaginationDto {
     description: 'Id категории',
     nullable: true,
     default: undefined,
+    required: false,
   })
   @IsOptional()
   @Type(() => Number)
