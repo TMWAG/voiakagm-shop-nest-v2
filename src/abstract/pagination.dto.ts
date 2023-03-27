@@ -9,6 +9,7 @@ export class PaginationDto {
     description: 'Номер страницы',
     nullable: true,
     default: 1,
+    required: false,
   })
   @IsOptional()
   @Type(() => Number)
@@ -20,6 +21,7 @@ export class PaginationDto {
     description: 'Кол-во товаров на странице',
     nullable: true,
     default: 12,
+    required: false,
   })
   @IsOptional()
   @Type(() => Number)
