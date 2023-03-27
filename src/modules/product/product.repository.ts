@@ -13,43 +13,18 @@ export class ProductRepository {
     categoryId: number,
     price: number,
     description: string,
+    used: boolean,
     amount?: number,
   ): Promise<Product> {
     return await this.prisma.product.create({
-      data: { name, vendorId, categoryId, price, description, amount },
-      include: { category: true, vendor: true, pictures: true },
+      data: { name, vendorId, categoryId, price, description, used, amount },
+      include: { category: true, vendor: true },
     });
   }
 
   //get
-  async getAllProducts(skip?: number, take?: number): Promise<Product[]> {
-    return await this.prisma.product.findMany({ skip, take });
-  }
-
-  async getAllProductsByVendorId(
-    vendorId: number,
-    skip?: number,
-    take?: number,
-  ): Promise<Product[]> {
-    return this.prisma.product.findMany({
-      where: { vendorId },
-      include: { category: true, vendor: true, pictures: true },
-      skip,
-      take,
-    });
-  }
-
-  async getAllProductsByCategoryId(
-    categoryId: number,
-    skip?: number,
-    take?: number,
-  ): Promise<Product[]> {
-    return await this.prisma.product.findMany({
-      where: { categoryId },
-      include: { category: true, vendor: true, pictures: true },
-      skip,
-      take,
-    });
+  async getAllProducts(options): Promise<Product[]> {
+    return await this.prisma.product.findMany(options);
   }
 
   async getProductById(id: number): Promise<Product> {
