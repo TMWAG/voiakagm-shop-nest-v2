@@ -8,6 +8,7 @@ import { CategoryModule } from './modules/category/category.module';
 import { VendorModule } from './modules/vendor/vendor.module';
 import { ParameterModule } from './modules/parameter/parameter.module';
 import { ProductModule } from './modules/product/product.module';
+import { ProductPictureModule } from './modules/product-picture/product-picture.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ProductModule } from './modules/product/product.module';
     VendorModule,
     ParameterModule,
     ProductModule,
+    ProductPictureModule,
   ],
   controllers: [],
   providers: [],
