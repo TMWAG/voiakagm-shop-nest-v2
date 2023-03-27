@@ -57,6 +57,7 @@ model Product {
   description     String
   amount          Int?
   sold            Int       @default(0)
+  used            Boolean
   feedbacks       ProductFeedback[]
   pictures        ProductPicture[]
   characteristics ProductCharacteristic[]
