@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsInt } from 'class-validator';
+import { IsString } from 'class-validator';
 import { IdDto } from 'src/abstract/id.dto';
 import { dtoValidationError } from 'src/errors/dto.errors';
 
@@ -11,6 +11,6 @@ export class UpdateProductNameDto extends IdDto {
     nullable: false,
   })
   @Type(() => String)
-  @IsInt({ message: dtoValidationError.type.int })
+  @IsString({ message: dtoValidationError.type.string })
   readonly name: string;
 }
