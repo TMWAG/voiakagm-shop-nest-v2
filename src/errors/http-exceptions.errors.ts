@@ -6,6 +6,9 @@ export const httpExceptionMessages = {
     recommendation: (id: number): string => {
       return `Рекомендация с Id = ${id} не найдена`;
     },
+    category: (id: number): string => {
+      return `Категория с Id = ${id} не найден`;
+    },
   },
   type: {
     vendor:
