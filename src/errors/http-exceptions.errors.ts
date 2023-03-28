@@ -15,6 +15,9 @@ export const httpExceptionMessages = {
     userAddress: (id: number): string => {
       return `Адрес с Id = ${id} не найден`;
     },
+    vendor: (id: number): string => {
+      return `Производитель с Id = ${id} не найден`;
+    },
   },
   type: {
     vendor:
