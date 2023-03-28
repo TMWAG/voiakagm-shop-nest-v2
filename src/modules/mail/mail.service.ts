@@ -21,7 +21,7 @@ export class MailService {
         },
       });
     } catch (e) {
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException(e.message);
     }
   }
 
@@ -40,7 +40,7 @@ export class MailService {
         },
       });
     } catch (e) {
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException(e.message);
     }
   }
 }

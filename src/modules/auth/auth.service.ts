@@ -3,6 +3,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserError } from 'src/errors/user.errors';
@@ -25,47 +26,70 @@ export class AuthService {
   ) {}
 
   async registerUser(dto: RegisterUserDto): Promise<true | never> {
-    await this.checkUserCredentialsUniquenessOrThrowError(dto.email, dto.phone);
-    const hashedPassword = await bcrypt.hash(dto.password, 5);
-    const user = await this.usersService.create({
-      ...dto,
-      password: hashedPassword,
-    });
-    this.mailService.sendUserConfirmationEmail(user);
-    return true;
+    try {
+      await this.checkUserCredentialsUniquenessOrThrowError(
+        dto.email,
+        dto.phone,
+      );
+      const hashedPassword = await bcrypt.hash(dto.password, 5);
+      const user = await this.usersService.create({
+        ...dto,
+        password: hashedPassword,
+      });
+      this.mailService.sendUserConfirmationEmail(user);
+      return true;
+    } catch (e) {
+      throw new InternalServerErrorException(e.message);
+    }
   }
 
   async activateUserAndUpdateToken(dto: ActivateUserByTokenDto) {
-    const user = await this.usersService.activateUserByToken(dto.token);
-    await this.usersService.updateUserTokenById(user.id);
-    return true;
+    try {
+      const user = await this.usersService.activateUserByToken(dto.token);
+      await this.usersService.updateUserTokenById(user.id);
+      return true;
+    } catch (e) {
+      throw new InternalServerErrorException(e.message);
+    }
   }
 
   async login(dto: LoginUserByEmailDto) {
-    const user = await this.usersService.getOneUserByEmailOrThrowError(
-      dto.email,
-    );
-    const payload = { id: user.id, email: user.email, role: user.role };
-    return {
-      access_token: this.jwtService.sign(payload, {
-        secret: process.env.SECRET_KEY,
-      }),
-    };
+    try {
+      const user = await this.usersService.getOneUserByEmailOrThrowError(
+        dto.email,
+      );
+      const payload = { id: user.id, email: user.email, role: user.role };
+      return {
+        access_token: this.jwtService.sign(payload, {
+          secret: process.env.SECRET_KEY,
+        }),
+      };
+    } catch (e) {
+      throw new InternalServerErrorException(e.message);
+    }
   }
 
   async sendRestorationEmail(dto: RequestRestoreByEmailDto) {
-    const user = await this.usersService.getOneUserByEmailOrThrowError(
-      dto.email,
-    );
-    this.mailService.sendRestorationEmail(user);
-    return true;
+    try {
+      const user = await this.usersService.getOneUserByEmailOrThrowError(
+        dto.email,
+      );
+      this.mailService.sendRestorationEmail(user);
+      return true;
+    } catch (e) {
+      throw new InternalServerErrorException(e.message);
+    }
   }
 
   async resetPasswordByToken(dto: ResetPasswordDto, token: string) {
-    const user = await this.usersService.getOneUserByTokenOrThrowError(token);
-    await this.usersService.updateUserPasswordById(user.id, dto);
-    await this.usersService.updateUserTokenById(user.id);
-    return true;
+    try {
+      const user = await this.usersService.getOneUserByTokenOrThrowError(token);
+      await this.usersService.updateUserPasswordById(user.id, dto);
+      await this.usersService.updateUserTokenById(user.id);
+      return true;
+    } catch (e) {
+      throw new InternalServerErrorException(e.message);
+    }
   }
 
   //utils
@@ -73,12 +97,16 @@ export class AuthService {
     email: string,
     pass: string,
   ): Promise<Partial<User> | null> {
-    const user = await this.usersService.getUserByEmail(email);
-    if (await bcrypt.compare(pass, user.password)) {
-      const { password, ...rest } = user;
-      return rest;
+    try {
+      const user = await this.usersService.getUserByEmail(email);
+      if (await bcrypt.compare(pass, user.password)) {
+        const { password, ...rest } = user;
+        return rest;
+      }
+      return null;
+    } catch (e) {
+      throw new InternalServerErrorException(e.message);
     }
-    return null;
   }
 
   private async checkUserCredentialsUniquenessOrThrowError(

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateProductPictureDto } from './dto/create-product-picture.dto';
 import { ProductPictureRepository } from './product-picture.repository';
 import * as uuid from 'uuid';
@@ -14,35 +14,46 @@ export class ProductPictureService {
     dto: CreateProductPictureDto,
     picture: Express.Multer.File,
   ) {
-    const filename = uuid.v4() + '.jpg';
-    const filepath = path.resolve(
-      __dirname,
-      '..',
-      '..',
-      'static',
-      String(dto.productId),
-    );
     try {
-      await fs.access(filepath);
-    } catch (error) {
-      fs.mkdir(filepath, { recursive: true });
+      const filename = uuid.v4() + '.jpg';
+      const filepath = path.resolve(
+        __dirname,
+        '..',
+        '..',
+        'static',
+        String(dto.productId),
+      );
+      try {
+        await fs.access(filepath);
+      } catch (error) {
+        fs.mkdir(filepath, { recursive: true });
+      }
+      fs.writeFile(path.join(filepath, filename), picture.buffer);
+      return await this.repository.createProductPicture(
+        dto.productId,
+        filename,
+      );
+    } catch (e) {
+      throw new InternalServerErrorException(e.message);
     }
-    fs.writeFile(path.join(filepath, filename), picture.buffer);
-    return await this.repository.createProductPicture(dto.productId, filename);
   }
 
   async deleteProductPictureById(dto: DeleteProductPictureDto) {
-    const productPictureData = await this.repository.deleteProductPictureById(
-      dto.id,
-    );
-    const filepath = path.resolve(
-      __dirname,
-      '..',
-      'static',
-      String(productPictureData.productId),
-      productPictureData.filename,
-    );
-    fs.rm(filepath);
-    return productPictureData;
+    try {
+      const productPictureData = await this.repository.deleteProductPictureById(
+        dto.id,
+      );
+      const filepath = path.resolve(
+        __dirname,
+        '..',
+        'static',
+        String(productPictureData.productId),
+        productPictureData.filename,
+      );
+      fs.rm(filepath);
+      return productPictureData;
+    } catch (e) {
+      throw new InternalServerErrorException(e.message);
+    }
   }
 }
