@@ -67,7 +67,7 @@ model Product {
 
 model ProductPicture {
   id          Int       @default(autoincrement()) @id
-  product     Product   @relation(fields: [productId], references: [id])
+  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId   Int
   filename    String    @map("picture_filename")
   @@map("product_pictures")
