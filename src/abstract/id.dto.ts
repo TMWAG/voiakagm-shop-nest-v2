@@ -6,7 +6,7 @@ import { dtoValidationError } from 'src/errors/dto.errors';
 export abstract class IdDto {
   @ApiProperty({
     example: 1,
-    description: 'Id продукта',
+    description: 'Id',
     nullable: false,
   })
   @Type(() => Number)
