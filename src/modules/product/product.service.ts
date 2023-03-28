@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { httpExceptionMessages } from 'src/errors/http-exceptions.errors';
 import { CreateProductDto } from './dto/create-product.dto';
 import { DeleteProductDto } from './dto/delete-product.dto';
 import { GetAllProductsDto } from './dto/get-all-products.dto';
@@ -38,15 +39,24 @@ export class ProductService {
   }
 
   async getProductById(dto: GetProductByIdDto) {
-    return await this.productRepository.getProductById(Number(dto.id));
+    return await this.getProductByIdOrThrowError(dto.id);
+  }
+
+  async getProductByIdOrThrowError(id: number) {
+    const product = await this.productRepository.getProductById(id);
+    if (!product)
+      throw new NotFoundException(httpExceptionMessages.notFound.product(id));
+    return product;
   }
 
   //update
   async updateProductName(dto: UpdateProductNameDto) {
+    await this.getProductByIdOrThrowError(dto.id);
     return await this.productRepository.updateProductNameById(dto.id, dto.name);
   }
 
   async updateProductCategory(dto: UpdateProductCategoryDto) {
+    await this.getProductByIdOrThrowError(dto.id);
     return await this.productRepository.updateProductCategoryById(
       dto.id,
       dto.categoryId,
@@ -54,6 +64,7 @@ export class ProductService {
   }
 
   async updateProductVendor(dto: UpdateProductVendorDto) {
+    await this.getProductByIdOrThrowError(dto.id);
     return await this.productRepository.updateProductVendorById(
       dto.id,
       dto.vendorId,
@@ -61,6 +72,7 @@ export class ProductService {
   }
 
   async updateProductDescription(dto: UpdateProductDescriptionDto) {
+    await this.getProductByIdOrThrowError(dto.id);
     return await this.productRepository.updateProductDescriptionById(
       dto.id,
       dto.description,
@@ -68,10 +80,12 @@ export class ProductService {
   }
 
   async updateProductPrice(dto: UpdateProductPriceDto) {
+    await this.getProductByIdOrThrowError(dto.id);
     return this.productRepository.updateProductPriceById(dto.id, dto.price);
   }
 
   async updateProductDiscount(dto: UpdateProductDiscountDto) {
+    await this.getProductByIdOrThrowError(dto.id);
     return await this.productRepository.updateProductDiscountById(
       dto.id,
       dto.discount,
@@ -79,6 +93,7 @@ export class ProductService {
   }
 
   async updateProductAmountManually(dto: UpdateProductAmountDto) {
+    await this.getProductByIdOrThrowError(dto.id);
     return await this.productRepository.updateProductAmountById(
       dto.id,
       dto.amount,
@@ -86,6 +101,7 @@ export class ProductService {
   }
 
   async deleteProduct(dto: DeleteProductDto) {
+    await this.getProductByIdOrThrowError(dto.id);
     return await this.productRepository.deleteProductById(dto.id);
   }
 
