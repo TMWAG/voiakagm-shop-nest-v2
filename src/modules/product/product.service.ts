@@ -38,7 +38,7 @@ export class ProductService {
   }
 
   async getProductById(dto: GetProductByIdDto) {
-    return await this.productRepository.getProductById(dto.id);
+    return await this.productRepository.getProductById(Number(dto.id));
   }
 
   //update
