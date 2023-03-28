@@ -9,11 +9,16 @@ import { VendorModule } from './modules/vendor/vendor.module';
 import { ParameterModule } from './modules/parameter/parameter.module';
 import { ProductModule } from './modules/product/product.module';
 import { ProductPictureModule } from './modules/product-picture/product-picture.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import * as path from 'path';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: `.env`,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: path.join(__dirname, 'static'),
     }),
     UsersModule,
     AuthModule,
