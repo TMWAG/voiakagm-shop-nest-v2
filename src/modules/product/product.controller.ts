@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Param,
   Patch,
   Post,
   Query,
@@ -23,6 +24,7 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { CreateProductDto } from './dto/create-product.dto';
 import { DeleteProductDto } from './dto/delete-product.dto';
 import { GetAllProductsDto } from './dto/get-all-products.dto';
+import { GetProductByIdDto } from './dto/get-product-by-id.dto';
 import { UpdateProductAmountDto } from './dto/update-product-amount.dto';
 import { UpdateProductCategoryDto } from './dto/update-product-category.dto';
 import { UpdateProductDescriptionDto } from './dto/update-product-description.dto';
@@ -73,6 +75,19 @@ export class ProductController {
   @Get('all')
   getAll(@Query() dto: GetAllProductsDto) {
     return this.productService.getAllProducts(dto);
+  }
+
+  @ApiOperation({ summary: 'Получение информации об одном товаре' })
+  @ApiOkResponse({
+    description: 'Успешное получение товара',
+    type: GetProductEntity,
+  })
+  @ApiBadRequestResponse({
+    description: 'Не указан Id товара',
+  })
+  @Get('id/:id')
+  getOne(@Param() dto: GetProductByIdDto) {
+    return this.productService.getProductById(dto);
   }
 
   @ApiBearerAuth()
