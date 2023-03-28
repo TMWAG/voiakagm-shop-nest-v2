@@ -9,6 +9,9 @@ export const httpExceptionMessages = {
     category: (id: number): string => {
       return `Категория с Id = ${id} не найден`;
     },
+    parameter: (id: number): string => {
+      return `Параметр с Id = ${id} не найден`;
+    },
   },
   type: {
     vendor:
