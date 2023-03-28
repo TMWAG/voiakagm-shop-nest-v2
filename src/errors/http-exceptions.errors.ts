@@ -12,6 +12,9 @@ export const httpExceptionMessages = {
     parameter: (id: number): string => {
       return `Параметр с Id = ${id} не найден`;
     },
+    userAddress: (id: number): string => {
+      return `Адрес с Id = ${id} не найден`;
+    },
   },
   type: {
     vendor:
