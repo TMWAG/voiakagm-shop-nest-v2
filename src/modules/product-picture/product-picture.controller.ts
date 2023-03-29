@@ -8,6 +8,14 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiForbiddenResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { Role } from '@prisma/client';
 import { Roles } from 'src/decorators/roles-auth.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -19,6 +27,14 @@ import { ProductPictureService } from './product-picture.service';
 export class ProductPictureController {
   constructor(private readonly productPictureService: ProductPictureService) {}
 
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Добавление картинки товару' })
+  @ApiOkResponse({
+    description: 'Картинка успешно добавлена и записана на диск',
+  })
+  @ApiBadRequestResponse({ description: 'Не указан id товара' })
+  @ApiUnauthorizedResponse({ description: 'Нет токена авторизации' })
+  @ApiForbiddenResponse({ description: 'Роль не соответствует заданным' })
   @Post('')
   @Roles(Role.ADMIN, Role.SUPERVISOR)
   @UseGuards(RolesGuard)
@@ -33,6 +49,12 @@ export class ProductPictureController {
     );
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Удаление картинки товаров' })
+  @ApiOkResponse({ description: 'Картинка успешно удалена' })
+  @ApiBadRequestResponse({ description: 'Не указан id картинки' })
+  @ApiUnauthorizedResponse({ description: 'Нет токена авторизации' })
+  @ApiForbiddenResponse({ description: 'Роль не соответствует заданным' })
   @Delete('')
   @Roles(Role.ADMIN, Role.SUPERVISOR)
   @UseGuards(RolesGuard)
