@@ -27,4 +27,10 @@ export class ProductPictureRepository {
   async deleteProductPictureById(id: number): Promise<ProductPicture> {
     return await this.prisma.productPicture.delete({ where: { id } });
   }
+
+  async deleteAllPicturesByProductId(productId: number) {
+    return await this.prisma.productPicture.deleteMany({
+      where: { productId },
+    });
+  }
 }
