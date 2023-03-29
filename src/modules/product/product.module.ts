@@ -4,6 +4,7 @@ import { ProductController } from './product.controller';
 import { ProductRepository } from './product.repository';
 import { PrismaModule } from 'src/database/prisma.module';
 import { JwtModule } from '@nestjs/jwt';
+import { ProductPictureModule } from '../product-picture/product-picture.module';
 
 @Module({
   providers: [ProductService, ProductRepository],
@@ -14,6 +15,7 @@ import { JwtModule } from '@nestjs/jwt';
       secret: process.env.PRIVATE_KEY,
       signOptions: { expiresIn: '24h' },
     }),
+    ProductPictureModule,
   ],
 })
 export class ProductModule {}
