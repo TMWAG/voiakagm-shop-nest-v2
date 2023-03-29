@@ -44,12 +44,11 @@ export class ProductCharacteristicRepository {
   async updateProductCharacteristicById(
     id: number,
     parameterId?: number,
-    productId?: number,
     value?: string,
   ): Promise<ProductCharacteristic> {
     return await this.prisma.productCharacteristic.update({
       where: { id },
-      data: { parameterId, productId, value },
+      data: { parameterId, value },
     });
   }
 
