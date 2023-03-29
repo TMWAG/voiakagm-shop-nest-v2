@@ -11,7 +11,7 @@ import { ProductModule } from './modules/product/product.module';
 import { ProductPictureModule } from './modules/product-picture/product-picture.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { FeedbackModule } from './modules/feedback/feedback.module';
-import { ProductParameterModule } from './modules/product-parameter/product-parameter.module';
+import { ProductCharacteristicModule } from './modules/product-characteristic/product-characteristic.module';
 import * as path from 'path';
 
 @Module({
@@ -32,7 +32,7 @@ import * as path from 'path';
     ProductModule,
     ProductPictureModule,
     FeedbackModule,
-    ProductParameterModule,
+    ProductCharacteristicModule,
   ],
   controllers: [],
   providers: [],
