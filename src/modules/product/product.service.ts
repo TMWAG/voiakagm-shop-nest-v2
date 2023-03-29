@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { httpExceptionMessages } from 'src/errors/http-exceptions.errors';
+import { ProductPictureService } from '../product-picture/product-picture.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { DeleteProductDto } from './dto/delete-product.dto';
 import { GetAllProductsDto } from './dto/get-all-products.dto';
@@ -16,7 +17,10 @@ import { ProductRepository } from './product.repository';
 
 @Injectable()
 export class ProductService {
-  constructor(private readonly productRepository: ProductRepository) {}
+  constructor(
+    private readonly productRepository: ProductRepository,
+    private readonly productPictureService: ProductPictureService,
+  ) {}
 
   //create
   async createProduct(dto: CreateProductDto) {
@@ -102,6 +106,9 @@ export class ProductService {
 
   async deleteProduct(dto: DeleteProductDto) {
     await this.getProductByIdOrThrowError(dto.id);
+    await this.productPictureService.deleteAllProductPicturesByProductId(
+      dto.id,
+    );
     return await this.productRepository.deleteProductById(dto.id);
   }
 
