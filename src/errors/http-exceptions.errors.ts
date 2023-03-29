@@ -21,6 +21,9 @@ export const httpExceptionMessages = {
     feedback: (id: number): string => {
       return `Отзыв с Id = ${id} не найден`;
     },
+    productCharacteristic: (id: number): string => {
+      return `Характеристика с Id = ${id} не найдена`;
+    },
   },
   type: {
     vendor:
