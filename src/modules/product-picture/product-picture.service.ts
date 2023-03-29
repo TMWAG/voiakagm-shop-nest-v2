@@ -20,15 +20,18 @@ export class ProductPictureService {
         __dirname,
         '..',
         '..',
+        '..',
         'static',
+        'products',
         String(dto.productId),
       );
+      console.log(filepath);
       try {
         await fs.access(filepath);
       } catch (error) {
-        fs.mkdir(filepath, { recursive: true });
+        await fs.mkdir(filepath, { recursive: true });
       }
-      fs.writeFile(path.join(filepath, filename), picture.buffer);
+      await fs.writeFile(path.join(filepath, filename), picture.buffer);
       return await this.repository.createProductPicture(
         dto.productId,
         filename,
@@ -38,6 +41,8 @@ export class ProductPictureService {
     }
   }
 
+  //serverUrl/products/{productId}/{filename}
+
   async deleteProductPictureById(dto: DeleteProductPictureDto) {
     try {
       const productPictureData = await this.repository.deleteProductPictureById(
@@ -46,12 +51,33 @@ export class ProductPictureService {
       const filepath = path.resolve(
         __dirname,
         '..',
+        '..',
+        '..',
         'static',
+        'products',
         String(productPictureData.productId),
         productPictureData.filename,
       );
       fs.rm(filepath);
       return productPictureData;
+    } catch (e) {
+      throw new InternalServerErrorException(e.message);
+    }
+  }
+
+  async deleteAllProductPicturesByProductId(productId: number) {
+    try {
+      const filepath = path.resolve(
+        __dirname,
+        '..',
+        '..',
+        '..',
+        'static',
+        'products',
+        String(productId),
+      );
+      fs.rm(filepath, { recursive: true });
+      return this.repository.deleteAllPicturesByProductId(productId);
     } catch (e) {
       throw new InternalServerErrorException(e.message);
     }
