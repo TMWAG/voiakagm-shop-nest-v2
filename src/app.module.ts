@@ -10,6 +10,7 @@ import { ParameterModule } from './modules/parameter/parameter.module';
 import { ProductModule } from './modules/product/product.module';
 import { ProductPictureModule } from './modules/product-picture/product-picture.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { FeedbackModule } from './modules/feedback/feedback.module';
 import * as path from 'path';
 
 @Module({
@@ -29,6 +30,7 @@ import * as path from 'path';
     ParameterModule,
     ProductModule,
     ProductPictureModule,
+    FeedbackModule,
   ],
   controllers: [],
   providers: [],
