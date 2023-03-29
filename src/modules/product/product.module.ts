@@ -17,5 +17,6 @@ import { ProductPictureModule } from '../product-picture/product-picture.module'
     }),
     ProductPictureModule,
   ],
+  exports: [ProductService],
 })
 export class ProductModule {}
