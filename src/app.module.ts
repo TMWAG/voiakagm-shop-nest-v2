@@ -18,7 +18,7 @@ import * as path from 'path';
       envFilePath: `.env`,
     }),
     ServeStaticModule.forRoot({
-      rootPath: path.join(__dirname, 'static'),
+      rootPath: path.join(__dirname, '..', 'static'),
     }),
     UsersModule,
     AuthModule,
