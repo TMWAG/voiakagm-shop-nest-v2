@@ -18,6 +18,9 @@ export const httpExceptionMessages = {
     vendor: (id: number): string => {
       return `Производитель с Id = ${id} не найден`;
     },
+    feedback: (id: number): string => {
+      return `Отзыв с Id = ${id} не найден`;
+    },
   },
   type: {
     vendor:
