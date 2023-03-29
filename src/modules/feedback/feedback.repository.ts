@@ -32,11 +32,20 @@ export class FeedbackRepository {
     return await this.prisma.productFeedback.findMany({ where: { userId } });
   }
 
+  async getFeedbackByUserIdAndProductId(
+    userId: number,
+    productId: number,
+  ): Promise<ProductFeedback> {
+    return await this.prisma.productFeedback.findFirst({
+      where: { userId, productId },
+    });
+  }
+
   //update
   async updateFeedbackById(
     id: number,
-    text: string,
-    rating: number,
+    text?: string,
+    rating?: number,
   ): Promise<ProductFeedback> {
     return await this.prisma.productFeedback.update({
       where: { id },
