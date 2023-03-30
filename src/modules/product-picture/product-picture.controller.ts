@@ -14,6 +14,7 @@ import {
   ApiForbiddenResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
@@ -23,6 +24,7 @@ import { CreateProductPictureDto } from './dto/create-product-picture.dto';
 import { DeleteProductPictureDto } from './dto/delete-product-picture.dto';
 import { ProductPictureService } from './product-picture.service';
 
+@ApiTags('Product Pictures')
 @Controller('product_picture')
 export class ProductPictureController {
   constructor(private readonly productPictureService: ProductPictureService) {}

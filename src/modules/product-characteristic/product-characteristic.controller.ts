@@ -14,6 +14,7 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
@@ -27,6 +28,7 @@ import { UpdateProductCharacteristicDto } from './dto/update-product-characteris
 import { ProductCharacteristicEntity } from './entities/product-characteristic.entity';
 import { ProductCharacteristicService } from './product-characteristic.service';
 
+@ApiTags('Product Characteristic')
 @Controller('product_characteristic')
 export class ProductCharacteristicController {
   constructor(
