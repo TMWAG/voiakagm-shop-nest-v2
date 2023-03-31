@@ -13,6 +13,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { FeedbackModule } from './modules/feedback/feedback.module';
 import { ProductCharacteristicModule } from './modules/product-characteristic/product-characteristic.module';
 import { RecommendationModule } from './modules/recommendation/recommendation.module';
+import { DeliveryServiceModule } from './modules/delivery-service/delivery-service.module';
 import * as path from 'path';
 
 @Module({
@@ -35,6 +36,7 @@ import * as path from 'path';
     FeedbackModule,
     ProductCharacteristicModule,
     RecommendationModule,
+    DeliveryServiceModule,
   ],
   controllers: [],
   providers: [],
