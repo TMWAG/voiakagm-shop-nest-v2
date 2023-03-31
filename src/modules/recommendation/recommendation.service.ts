@@ -83,7 +83,7 @@ export class RecommendationService {
 
   //utils
   async writeRecommendationPicture(picture: Express.Multer.File) {
-    const filename = uuid.v4() + ',jpg';
+    const filename = uuid.v4() + '.jpg';
     try {
       await fs.access(this.filepath);
     } catch (error) {
