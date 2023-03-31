@@ -16,22 +16,31 @@ export class RecommendationRepository {
   ): Promise<Recommendation> {
     return await this.prisma.recommendation.create({
       data: { product, filename, rating, comment, vendorId },
+      include: { vendor: true },
     });
   }
 
   //get
   async getRecommendationById(id: number): Promise<Recommendation> {
-    return await this.prisma.recommendation.findFirst({ where: { id } });
+    return await this.prisma.recommendation.findFirst({
+      where: { id },
+      include: { vendor: true },
+    });
   }
 
   async getAllRecommendations(): Promise<Recommendation[]> {
-    return await this.prisma.recommendation.findMany();
+    return await this.prisma.recommendation.findMany({
+      include: { vendor: true },
+    });
   }
 
   async getAllRecommendationsByVendorId(
     vendorId: number,
   ): Promise<Recommendation[]> {
-    return await this.prisma.recommendation.findMany({ where: { vendorId } });
+    return await this.prisma.recommendation.findMany({
+      where: { vendorId },
+      include: { vendor: true },
+    });
   }
 
   //update
@@ -45,11 +54,15 @@ export class RecommendationRepository {
     return await this.prisma.recommendation.update({
       where: { id },
       data: { filename, rating, comment, vendorId },
+      include: { vendor: true },
     });
   }
 
   //delete
   async deleteRecommendationById(id: number): Promise<Recommendation> {
-    return this.prisma.recommendation.delete({ where: { id } });
+    return this.prisma.recommendation.delete({
+      where: { id },
+      include: { vendor: true },
+    });
   }
 }
