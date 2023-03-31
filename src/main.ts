@@ -1,7 +1,10 @@
+import 'reflect-metadata';
+import 'es6-shim';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ValidationPipe } from './pipes/validation.pipe';
+import { ValidationPipe } from '@nestjs/common';
+import { ValidationException } from './exceptions/validation.exception';
 
 async function bootstrap() {
   const port = process.env.PORT || 5000;
@@ -15,7 +18,21 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/api/docs', app, document);
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      stopAtFirstError: true,
+      exceptionFactory(errors) {
+        const messages = errors.map((err) => {
+          const con = err.constraints;
+          if (con) {
+            return `${err.property} - ${Object.values(con).join(', ')}`;
+          }
+        });
+        throw new ValidationException(messages);
+      },
+    }),
+  );
   await app.listen(port, () => console.log(`server started at ${port} port`));
 }
 bootstrap();
