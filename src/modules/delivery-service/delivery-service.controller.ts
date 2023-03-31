@@ -22,7 +22,7 @@ import { Roles } from 'src/decorators/roles-auth.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { DeliveryServiceService } from './delivery-service.service';
 import { CreateDeliveryServiceDto } from './dto/create-delivery-service.dto';
-import { DeleteDeliveryServiceDto } from './dto/delete-delevery-service.dto';
+import { DeleteDeliveryServiceDto } from './dto/delete-delivery-service.dto';
 import { UpdateDeliveryServiceDto } from './dto/update-delivery-service.dto';
 import { DeliveryServiceEntity } from './entities/delivery-service.entity';
 

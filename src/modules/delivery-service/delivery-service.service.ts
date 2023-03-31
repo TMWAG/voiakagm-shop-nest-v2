@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { httpExceptionMessages } from 'src/errors/http-exceptions.errors';
 import { DeliveryServiceRepository } from './delivery-service.repository';
 import { CreateDeliveryServiceDto } from './dto/create-delivery-service.dto';
-import { DeleteDeliveryServiceDto } from './dto/delete-delevery-service.dto';
+import { DeleteDeliveryServiceDto } from './dto/delete-delivery-service.dto';
 import { UpdateDeliveryServiceDto } from './dto/update-delivery-service.dto';
 
 @Injectable()
