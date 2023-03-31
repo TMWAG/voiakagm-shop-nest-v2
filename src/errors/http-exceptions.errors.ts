@@ -24,6 +24,9 @@ export const httpExceptionMessages = {
     productCharacteristic: (id: number): string => {
       return `Характеристика с Id = ${id} не найдена`;
     },
+    deliveryService: (id: number): string => {
+      return `Служба доставки с Id = ${id} не найдена`;
+    },
   },
   type: {
     vendor:
