@@ -60,7 +60,6 @@ export class RecommendationController {
   @Roles(Role.ADMIN)
   @UseGuards(RolesGuard)
   delete(@Body() dto: DeleteRecommendationDto) {
-    console.log(dto);
     return this.recommendationService.deleteRecommendation(dto);
   }
 }
