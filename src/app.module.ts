@@ -14,6 +14,7 @@ import { FeedbackModule } from './modules/feedback/feedback.module';
 import { ProductCharacteristicModule } from './modules/product-characteristic/product-characteristic.module';
 import { RecommendationModule } from './modules/recommendation/recommendation.module';
 import { DeliveryServiceModule } from './modules/delivery-service/delivery-service.module';
+import { OrderModule } from './modules/order/order.module';
 import * as path from 'path';
 
 @Module({
@@ -37,6 +38,7 @@ import * as path from 'path';
     ProductCharacteristicModule,
     RecommendationModule,
     DeliveryServiceModule,
+    OrderModule,
   ],
   controllers: [],
   providers: [],
