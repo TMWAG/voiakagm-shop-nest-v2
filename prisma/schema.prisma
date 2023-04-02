@@ -132,13 +132,13 @@ model Order {
   id                Int             @default(autoincrement()) @id
   user              User            @relation(fields: [userId], references: [id])
   userId            Int
-  userAddress       UserAddress     @relation(fields: [userAddressId], references: [id])
-  userAddressId     Int
+  userAddress       UserAddress?    @relation(fields: [userAddressId], references: [id])
+  userAddressId     Int?
   createdAt         DateTime        @default(now())
   status            OrderStatus     @default(NOT_APPROVED) @map("order_status")
   trackNo           String?
-  deliveryService   DeliveryService @relation(fields: [deliveryServiceId], references: [id])
-  deliveryServiceId Int
+  deliveryService   DeliveryService? @relation(fields: [deliveryServiceId], references: [id])
+  deliveryServiceId Int?
   orderedProducts   OrderedProduct[]
   @@map("orders")
 }
