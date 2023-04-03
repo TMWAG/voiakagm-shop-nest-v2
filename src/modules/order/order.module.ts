@@ -9,5 +9,6 @@ import { JwtModule } from '@nestjs/jwt';
   providers: [OrderService, OrderRepository],
   controllers: [OrderController],
   imports: [PrismaModule, JwtModule],
+  exports: [OrderService],
 })
 export class OrderModule {}
