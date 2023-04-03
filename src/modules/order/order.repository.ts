@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Order } from '@prisma/client';
+import { Order, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/database/prisma.service';
 
 @Injectable()
@@ -22,47 +22,13 @@ export class OrderRepository {
     });
   }
 
-  async getAllOrdersByUserId(userId: number): Promise<Order[]> {
-    return await this.prisma.order.findMany({ where: { userId } });
+  async getAll(options: Prisma.OrderFindManyArgs): Promise<Order[]> {
+    return await this.prisma.order.findMany(options);
   }
 
-  async getAllByDeliveryServiceId(deliveryServiceId: number): Promise<Order[]> {
-    return await this.prisma.order.findMany({ where: { deliveryServiceId } });
-  }
-
-  async getAllNotApproved(): Promise<Order[]> {
+  async getAllByUserId(userId: number): Promise<Order[]> {
     return await this.prisma.order.findMany({
-      where: { status: 'NOT_APPROVED' },
-    });
-  }
-
-  async getAllApproved(): Promise<Order[]> {
-    return await this.prisma.order.findMany({
-      where: { status: 'APPROVED' },
-    });
-  }
-
-  async getAllPaid(): Promise<Order[]> {
-    return await this.prisma.order.findMany({
-      where: { status: 'PAID' },
-    });
-  }
-
-  async getAllCompleted(): Promise<Order[]> {
-    return await this.prisma.order.findMany({
-      where: { status: 'COMPLETED' },
-    });
-  }
-
-  async getAllSentForDelivery(): Promise<Order[]> {
-    return await this.prisma.order.findMany({
-      where: { status: 'SENT_FOR_DELIVERY' },
-    });
-  }
-
-  async getAllDelivered(): Promise<Order[]> {
-    return await this.prisma.order.findMany({
-      where: { status: 'DELIVERED' },
+      where: { userId },
     });
   }
 
