@@ -150,6 +150,7 @@ enum OrderStatus {
   COMPLETED
   SENT_FOR_DELIVERY
   DELIVERED
+  CANCELLED 
 }
 
 model DeliveryService {
