@@ -14,6 +14,18 @@ export class OrderedProductsRepository {
   ): Promise<OrderedProduct> {
     return await this.prisma.orderedProduct.create({
       data: { orderId, productId, amount },
+      include: {
+        product: {
+          select: {
+            id: true,
+            name: true,
+            price: true,
+            vendor: true,
+            category: true,
+            pictures: { take: 1 },
+          },
+        },
+      },
     });
   }
 
