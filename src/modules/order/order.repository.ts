@@ -13,7 +13,44 @@ export class OrderRepository {
 
   //get
   async getById(id: number): Promise<Order | undefined> {
-    return await this.prisma.order.findFirst({ where: { id } });
+    return await this.prisma.order.findFirst({
+      where: { id },
+      include: {
+        user: {
+          select: {
+            name: true,
+            surname: true,
+            email: true,
+            phone: true,
+            vkLink: true,
+            tgLink: true,
+          },
+        },
+        userAddress: {
+          select: { address: true },
+        },
+        deliveryService: {
+          select: { name: true },
+        },
+        orderedProducts: {
+          select: {
+            product: {
+              select: {
+                id: true,
+                name: true,
+                vendor: true,
+                category: true,
+                price: true,
+                discount: true,
+                used: true,
+                amount: true,
+                pictures: { take: 1 },
+              },
+            },
+          },
+        },
+      },
+    });
   }
 
   async getCurrentByUserId(userId: number): Promise<Order | undefined> {
@@ -29,6 +66,26 @@ export class OrderRepository {
   async getAllByUserId(userId: number): Promise<Order[]> {
     return await this.prisma.order.findMany({
       where: { userId },
+      include: {
+        userAddress: {
+          select: { address: true },
+        },
+        orderedProducts: {
+          include: {
+            product: {
+              select: {
+                id: true,
+                name: true,
+                vendor: true,
+                price: true,
+                amount: true,
+                discount: true,
+                pictures: { take: 1 },
+              },
+            },
+          },
+        },
+      },
     });
   }
 
