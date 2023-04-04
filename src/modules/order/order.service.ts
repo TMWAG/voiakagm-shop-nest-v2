@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { GetAllOrdersDto } from './dto/get-all-orders.dto';
+import { GetOneOrderDto } from './dto/get-one-order.dto';
 import { OrderRepository } from './order.repository';
 
 @Injectable()
@@ -17,6 +18,10 @@ export class OrderService {
   }
 
   //get
+  async getOne(dto: GetOneOrderDto) {
+    return await this.repository.getById(dto.id);
+  }
+
   async getAll(dto: GetAllOrdersDto) {
     return await this.repository.getAll(
       this.constructSearchOptionsFromDto(dto),
