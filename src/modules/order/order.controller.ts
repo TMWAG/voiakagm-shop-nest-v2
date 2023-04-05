@@ -1,7 +1,9 @@
 import {
+  Body,
   Controller,
   Get,
   Param,
+  Patch,
   Query,
   Request,
   UseGuards,
@@ -12,6 +14,9 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { GetAllOrdersDto } from './dto/get-all-orders.dto';
 import { GetOneOrderDto } from './dto/get-one-order.dto';
+import { UpdateOrderDeliveryServiceDto } from './dto/update-order-delivery-service.dto';
+import { UpdateOrderTrackNoDto } from './dto/update-order-track-no.dto';
+import { UpdateUserAddressDto } from './dto/update-user-address.dto';
 import { OrderService } from './order.service';
 
 @Controller('order')
@@ -36,5 +41,25 @@ export class OrderController {
   @UseGuards(JwtAuthGuard)
   getAllUser(@Request() { user }) {
     return this.orderService.getAllUser(user.id);
+  }
+
+  @Patch('set_address')
+  @UseGuards(JwtAuthGuard)
+  setAddress(@Request() { user }, @Body() dto: UpdateUserAddressDto) {
+    return this.orderService.setUserAddress(user.id, dto);
+  }
+
+  @Patch('delivery_service')
+  @Roles(Role.ADMIN, Role.SUPERVISOR)
+  @UseGuards(RolesGuard)
+  setDeliveryService(@Body() dto: UpdateOrderDeliveryServiceDto) {
+    return this.orderService.setDeliveryService(dto);
+  }
+
+  @Patch('set_track_no')
+  @Roles(Role.ADMIN, Role.SUPERVISOR)
+  @UseGuards(RolesGuard)
+  setTrackNo(@Body() dto: UpdateOrderTrackNoDto) {
+    return this.orderService.setTrackNo(dto);
   }
 }
