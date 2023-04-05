@@ -1,12 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { UsersAddressesService } from '../users-addresses/users-addresses.service';
 import { GetAllOrdersDto } from './dto/get-all-orders.dto';
 import { GetOneOrderDto } from './dto/get-one-order.dto';
+import { UpdateOrderDeliveryServiceDto } from './dto/update-order-delivery-service.dto';
+import { UpdateOrderTrackNoDto } from './dto/update-order-track-no.dto';
+import { UpdateUserAddressDto } from './dto/update-user-address.dto';
 import { OrderRepository } from './order.repository';
 
 @Injectable()
 export class OrderService {
-  constructor(private readonly repository: OrderRepository) {}
+  constructor(
+    private readonly repository: OrderRepository,
+    private readonly usersAddressesService: UsersAddressesService,
+  ) {}
 
   //create
   async createOrGetCurrent(userId: number) {
@@ -19,7 +26,13 @@ export class OrderService {
 
   //get
   async getOne(dto: GetOneOrderDto) {
-    return await this.repository.getById(dto.id);
+    return await this.getOneOrThrowError(dto.id);
+  }
+
+  async getOneOrThrowError(id: number) {
+    const order = await this.repository.getById(id);
+    if (!order) throw new NotFoundException(`Заказ с id ${id} не найден`);
+    return order;
   }
 
   async getAll(dto: GetAllOrdersDto) {
@@ -33,6 +46,26 @@ export class OrderService {
   }
 
   //update
+  async setUserAddress(userId: number, dto: UpdateUserAddressDto) {
+    await this.usersAddressesService.checkUserOwnershipOnAddressOrThrowError(
+      userId,
+      dto.userAddressId,
+    );
+    const order = await this.createOrGetCurrent(userId);
+    return await this.repository.setUserAddress(order.id, dto.userAddressId);
+  }
+
+  async setDeliveryService(dto: UpdateOrderDeliveryServiceDto) {
+    await this.getOneOrThrowError(dto.id);
+    return await this.repository.setDeliveryService(
+      dto.id,
+      dto.deliveryServiceId,
+    );
+  }
+
+  async setTrackNo(dto: UpdateOrderTrackNoDto) {
+    return await this.repository.setTrackNo(dto.id, dto.trackNo);
+  }
 
   //utils
   private constructSearchOptionsFromDto(
