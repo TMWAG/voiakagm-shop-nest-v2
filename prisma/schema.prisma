@@ -139,6 +139,7 @@ model Order {
   trackNo           String?
   deliveryService   DeliveryService? @relation(fields: [deliveryServiceId], references: [id])
   deliveryServiceId Int?
+  crate             Boolean           @default(false)
   orderedProducts   OrderedProduct[]
   @@map("orders")
 }
