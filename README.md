@@ -1,20 +1,28 @@
 # VoiakaGM-shop-nest-prisma
 
-## Для разработки
+## Требования
+
++ NodeJS v18.15.0^
++ npm v9.5.0^
++ Docker v23.0.2^
 
 ## Установка и запуск
 
 ``` bash
 $ git clone git@github.com:TMWAG/voiakagm-shop-nest-v2-prisma.git
 $ cd voiakagm-shop-nest-prisma
-$ docker compose build && docker compose up -d
+$ npm i
+$ npm i -g @nestjs/cli
+$ npx prisma generate
+$ npm run build
+$ docker compose up -d
 ```
 
 ## Документация
 
 ### [Эндпоинты API](http://localhost:5000/api/docs)
 
-### [Модель БД]()
+### [Модель БД](https://app.diagrams.net/#HTMWAG%2Fvoiakagm-shop-nest-v2-prisma%2Fmaster%2FVoiakaGM.drawio)
 
 ## Переменные окружения
 
