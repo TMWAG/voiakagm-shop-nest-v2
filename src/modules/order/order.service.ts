@@ -7,12 +7,14 @@ import { UpdateOrderDeliveryServiceDto } from './dto/update-order-delivery-servi
 import { UpdateOrderTrackNoDto } from './dto/update-order-track-no.dto';
 import { UpdateUserAddressDto } from './dto/update-user-address.dto';
 import { OrderRepository } from './order.repository';
+import { TinkoffAcqService } from '../tinkoff-acq/tinkoff-acq.service';
 
 @Injectable()
 export class OrderService {
   constructor(
     private readonly repository: OrderRepository,
     private readonly usersAddressesService: UsersAddressesService,
+    private readonly tinkoffAcqService: TinkoffAcqService,
   ) {}
 
   //create
