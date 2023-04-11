@@ -47,6 +47,7 @@ export class OrderRepository {
                 pictures: { take: 1 },
               },
             },
+            amount: true,
           },
         },
       },
