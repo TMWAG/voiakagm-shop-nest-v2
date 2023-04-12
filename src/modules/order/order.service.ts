@@ -69,6 +69,11 @@ export class OrderService {
     return await this.repository.setTrackNo(dto.id, dto.trackNo);
   }
 
+  async approve(id: number) {
+    const order = await this.getOneOrThrowError(id);
+    await this.tinkoffAcqService.init(order);
+  }
+
   //utils
   private constructSearchOptionsFromDto(
     dto: GetAllOrdersDto,
