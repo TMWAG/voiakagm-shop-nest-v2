@@ -31,7 +31,7 @@ export class TinkoffAcqService {
       }[];
     },
   ) {
-    const url = 'https://' + process.env.TINKOFF_ACQ_URL + '/Init';
+    const url = process.env.TINKOFF_ACQ_URL + '/Init';
     const items = order.orderedProducts.map((item) => {
       const discount = item.product.discount
         ? (item.product.price / 100) * item.product.discount
@@ -68,6 +68,6 @@ export class TinkoffAcqService {
         'Content-Type': 'application/json',
       },
     });
-    console.log(response);
+    console.log(response.json());
   }
 }
