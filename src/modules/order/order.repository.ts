@@ -12,7 +12,7 @@ export class OrderRepository {
   }
 
   //get
-  async getById(id: number): Promise<Order | undefined> {
+  async getById(id: number) {
     return await this.prisma.order.findFirst({
       where: { id },
       include: {
