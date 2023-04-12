@@ -18,6 +18,7 @@ import { UpdateOrderDeliveryServiceDto } from './dto/update-order-delivery-servi
 import { UpdateOrderTrackNoDto } from './dto/update-order-track-no.dto';
 import { UpdateUserAddressDto } from './dto/update-user-address.dto';
 import { OrderService } from './order.service';
+import { ApproveOrderDto } from './dto/approve-order.dto';
 
 @Controller('order')
 export class OrderController {
@@ -61,5 +62,11 @@ export class OrderController {
   @UseGuards(RolesGuard)
   setTrackNo(@Body() dto: UpdateOrderTrackNoDto) {
     return this.orderService.setTrackNo(dto);
+  }
+
+  @Patch('approve')
+  @UseGuards(JwtAuthGuard)
+  approve(@Body() dto: ApproveOrderDto) {
+    return this.orderService.approve(dto.id);
   }
 }
