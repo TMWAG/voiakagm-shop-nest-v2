@@ -19,6 +19,7 @@ import { UpdateOrderTrackNoDto } from './dto/update-order-track-no.dto';
 import { UpdateUserAddressDto } from './dto/update-user-address.dto';
 import { OrderService } from './order.service';
 import { ApproveOrderDto } from './dto/approve-order.dto';
+import { CheckOrderPaymentDto } from './dto/check-order-payment.dto';
 
 @Controller('order')
 export class OrderController {
@@ -42,6 +43,18 @@ export class OrderController {
   @UseGuards(JwtAuthGuard)
   getAllUser(@Request() { user }) {
     return this.orderService.getAllUser(user.id);
+  }
+
+  @Get('current')
+  @UseGuards(JwtAuthGuard)
+  getCurrent(@Request() { user }) {
+    return this.orderService.createOrGetCurrent(user.id);
+  }
+
+  @Get('check_payment/:id')
+  @UseGuards(JwtAuthGuard)
+  checkOrderPayment(@Param() dto: CheckOrderPaymentDto) {
+    return this.orderService.checkPayment(dto);
   }
 
   @Patch('set_address')
