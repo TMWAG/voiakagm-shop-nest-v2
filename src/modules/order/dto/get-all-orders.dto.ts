@@ -7,7 +7,7 @@ import { dtoValidationError } from 'src/errors/dto.errors';
 
 const statuses: string[] = [
   OrderStatus.NOT_APPROVED,
-  OrderStatus.APPROVED,
+  OrderStatus.AWAITING_PAYMENT,
   OrderStatus.PAID,
   OrderStatus.COMPLETED,
   OrderStatus.SENT_FOR_DELIVERY,
