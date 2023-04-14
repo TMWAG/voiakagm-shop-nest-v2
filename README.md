@@ -42,6 +42,7 @@ EMAIL_USER| - |Почта ящика-отправителя
 EMAIL_PASS| - |Пароль почты ящика-отправителя
 HOST_URL|-|URL Хоста
 TINKOFF_TERMINAL_KEY|-|Id терминала
+TINKOFF_TERMINAL_PASSWORD|-|Пароль терминала
 TINKOFF_ACQ_URL|-|URL сервера эквайринга
 
 ## Дополнительное ПО для разработки
