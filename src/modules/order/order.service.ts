@@ -89,7 +89,11 @@ export class OrderService {
 
   async checkPayment(dto: CheckOrderPaymentDto) {
     const order = await this.getOneOrThrowError(dto.id);
-    return await this.tinkoffAcqService.checkOrder(order.id);
+    const result = await this.tinkoffAcqService.checkOrder(order.id);
+    if (result.Payments.some((payment) => payment.Status === 'CONFIRMED')) {
+      this.repository.setStatusToPaid(dto.id);
+    }
+    return await this.getOneOrThrowError(dto.id);
   }
 
   //utils
