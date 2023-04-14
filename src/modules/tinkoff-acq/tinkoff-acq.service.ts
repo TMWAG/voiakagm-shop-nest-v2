@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Order, Vendor, Category, ProductPicture } from '@prisma/client';
+import { createHash } from 'crypto';
 
 @Injectable()
 export class TinkoffAcqService {
@@ -60,6 +61,28 @@ export class TinkoffAcqService {
         Taxation: 'osn',
         Items: items,
       },
+    };
+    const response = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return await response.json();
+  }
+
+  async checkOrder(orderId: number) {
+    const url = process.env.TINKOFF_ACQ_URL + '/CheckOrder';
+    const stringToHash =
+      orderId +
+      process.env.TINKOFF_TERMINAL_PASSWORD +
+      process.env.TINKOFF_TERMINAL_KEY;
+    const hash = createHash('sha256').update(stringToHash).digest('hex');
+    const body = {
+      TerminalKey: process.env.TINKOFF_TERMINAL_KEY,
+      OrderId: orderId,
+      Token: hash,
     };
     const response = await fetch(url, {
       method: 'POST',
