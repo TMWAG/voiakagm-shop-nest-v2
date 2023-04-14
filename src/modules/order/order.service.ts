@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { UsersAddressesService } from '../users-addresses/users-addresses.service';
 import { GetAllOrdersDto } from './dto/get-all-orders.dto';
@@ -8,6 +12,7 @@ import { UpdateOrderTrackNoDto } from './dto/update-order-track-no.dto';
 import { UpdateUserAddressDto } from './dto/update-user-address.dto';
 import { OrderRepository } from './order.repository';
 import { TinkoffAcqService } from '../tinkoff-acq/tinkoff-acq.service';
+import { ApproveOrderDto } from './dto/approve-order.dto';
 
 @Injectable()
 export class OrderService {
@@ -69,9 +74,16 @@ export class OrderService {
     return await this.repository.setTrackNo(dto.id, dto.trackNo);
   }
 
-  async approve(id: number) {
-    const order = await this.getOneOrThrowError(id);
-    await this.tinkoffAcqService.init(order);
+  async approve(dto: ApproveOrderDto) {
+    const order = await this.getOneOrThrowError(dto.id);
+    const response = await this.tinkoffAcqService.init(order);
+    if (!response.Success) {
+      throw new InternalServerErrorException(response.Error);
+    }
+    this.repository.setStatusToApproved(dto.id);
+    return {
+      link: response.PaymentURL,
+    };
   }
 
   //utils
