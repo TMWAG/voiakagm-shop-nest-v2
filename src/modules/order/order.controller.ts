@@ -31,14 +31,14 @@ export class OrderController {
     return this.orderService.getAll(dto);
   }
 
-  @Get(':id')
+  @Get('user/:id')
   @Roles(Role.ADMIN, Role.SUPERVISOR)
   @UseGuards(RolesGuard)
   getOne(@Param() dto: GetOneOrderDto) {
     return this.orderService.getOne(dto);
   }
 
-  @Get('user')
+  @Get('my')
   @UseGuards(JwtAuthGuard)
   getAllUser(@Request() { user }) {
     return this.orderService.getAllUser(user.id);
@@ -67,6 +67,6 @@ export class OrderController {
   @Patch('approve')
   @UseGuards(JwtAuthGuard)
   approve(@Body() dto: ApproveOrderDto) {
-    return this.orderService.approve(dto.id);
+    return this.orderService.approve(dto);
   }
 }
