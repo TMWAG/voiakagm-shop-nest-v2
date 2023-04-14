@@ -81,7 +81,7 @@ export class OrderService {
     if (!response.Success) {
       throw new InternalServerErrorException(response.Error);
     }
-    this.repository.setStatusToApproved(dto.id);
+    this.repository.setStatusToAwaitingPayment(dto.id);
     return {
       link: response.PaymentURL,
     };

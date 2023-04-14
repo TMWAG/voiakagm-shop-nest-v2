@@ -98,10 +98,10 @@ export class OrderRepository {
     });
   }
 
-  async setStatusToApproved(id: number): Promise<Order> {
+  async setStatusToAwaitingPayment(id: number): Promise<Order> {
     return await this.prisma.order.update({
       where: { id },
-      data: { status: 'APPROVED' },
+      data: { status: 'AWAITING_PAYMENT' },
     });
   }
 
