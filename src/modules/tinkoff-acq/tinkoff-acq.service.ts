@@ -68,6 +68,6 @@ export class TinkoffAcqService {
         'Content-Type': 'application/json',
       },
     });
-    console.log(response.json());
+    return await response.json();
   }
 }
