@@ -146,7 +146,7 @@ model Order {
 
 enum OrderStatus {
   NOT_APPROVED
-  APPROVED
+  AWAITING_PAYMENT
   PAID
   COMPLETED
   SENT_FOR_DELIVERY
