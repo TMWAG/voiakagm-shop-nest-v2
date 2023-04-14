@@ -13,6 +13,7 @@ import { UpdateUserAddressDto } from './dto/update-user-address.dto';
 import { OrderRepository } from './order.repository';
 import { TinkoffAcqService } from '../tinkoff-acq/tinkoff-acq.service';
 import { ApproveOrderDto } from './dto/approve-order.dto';
+import { CheckOrderPaymentDto } from './dto/check-order-payment.dto';
 
 @Injectable()
 export class OrderService {
@@ -84,6 +85,11 @@ export class OrderService {
     return {
       link: response.PaymentURL,
     };
+  }
+
+  async checkPayment(dto: CheckOrderPaymentDto) {
+    const order = await this.getOneOrThrowError(dto.id);
+    return await this.tinkoffAcqService.checkOrder(order.id);
   }
 
   //utils
