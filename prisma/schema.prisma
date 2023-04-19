@@ -11,20 +11,21 @@ datasource db {
 }
 
 model User {
-  id            Int     @default(autoincrement()) @id
-  name          String  @map("user_name")
-  surname       String  @map("user_surename")
-  phone         String  @map("user_phone") @unique
-  role          Role    @default(USER)
-  email         String  @map("user_email") @unique
-  password      String  @map("user_password")
-  vkLink        String? @map("vk_link")
-  tgLink        String? @map("tg_link")
-  isActive      Boolean @default(false) @map("is_active")
-  token         String  @default(uuid()) @unique
-  feedbacks     ProductFeedback[]
-  userAddresses UserAddress[]
-  orders        Order[]
+  id                Int     @default(autoincrement()) @id
+  name              String  @map("user_name")
+  surname           String  @map("user_surename")
+  phone             String  @map("user_phone") @unique
+  role              Role    @default(USER)
+  email             String  @map("user_email") @unique
+  password          String  @map("user_password")
+  vkLink            String? @map("vk_link")
+  tgLink            String? @map("tg_link")
+  isActive          Boolean @default(false) @map("is_active")
+  token             String  @default(uuid()) @unique
+  feedbacks         ProductFeedback[]
+  userAddresses     UserAddress[]
+  orders            Order[]
+  purchasedProducts PurchasedProducts[]
   @@map("users")
 }
 
@@ -46,23 +47,33 @@ model ProductFeedback {
 }
 
 model Product {
-  id              Int       @default(autoincrement()) @id
-  name            String    @map("product_name")
-  vendor          Vendor    @relation(fields: [vendorId], references: [id])
-  vendorId        Int
-  category        Category  @relation(fields: [categoryId], references: [id])
-  categoryId      Int
-  price           Int
-  discount        Int?
-  description     String
-  amount          Int?
-  sold            Int       @default(0)
-  used            Boolean
-  feedbacks       ProductFeedback[]
-  pictures        ProductPicture[]
-  characteristics ProductCharacteristic[]
-  orderedProducts OrderedProduct[]
+  id                Int       @default(autoincrement()) @id
+  name              String    @map("product_name")
+  vendor            Vendor    @relation(fields: [vendorId], references: [id])
+  vendorId          Int
+  category          Category  @relation(fields: [categoryId], references: [id])
+  categoryId        Int
+  price             Int
+  discount          Int?
+  description       String
+  amount            Int?
+  sold              Int       @default(0)
+  used              Boolean
+  feedbacks         ProductFeedback[]
+  pictures          ProductPicture[]
+  characteristics   ProductCharacteristic[]
+  orderedProducts   OrderedProduct[]
+  purchasedProducts PurchasedProducts[]
   @@map("products")
+}
+
+model PurchasedProducts {
+  id        Int     @default(autoincrement()) @id
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+  @@map("purchased_products")
 }
 
 model ProductPicture {
