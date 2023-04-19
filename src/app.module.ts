@@ -17,6 +17,7 @@ import { DeliveryServiceModule } from './modules/delivery-service/delivery-servi
 import { OrderModule } from './modules/order/order.module';
 import { OrderedProductsModule } from './modules/ordered-products/ordered-products.module';
 import { TinkoffAcqModule } from './modules/tinkoff-acq/tinkoff-acq.module';
+import { PurchasedProductsModule } from './modules/purchased-products/purchased-products.module';
 import * as path from 'path';
 
 @Module({
@@ -43,6 +44,7 @@ import * as path from 'path';
     OrderModule,
     OrderedProductsModule,
     TinkoffAcqModule,
+    PurchasedProductsModule,
   ],
   controllers: [],
   providers: [],
