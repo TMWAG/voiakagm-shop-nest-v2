@@ -13,6 +13,7 @@ import { GetAllFeedbackByProductIdDto } from './dto/get-all-feedbacks-by-product
 import { GetAllFeedbackByUserIdDto } from './dto/get-all-feedbacks-by-user-id.dto';
 import { UpdateFeedbackDto } from './dto/update-feedback.dto';
 import { FeedbackRepository } from './feedback.repository';
+import { PurchasedProductsService } from '../purchased-products/purchased-products.service';
 
 @Injectable()
 export class FeedbackService {
@@ -20,12 +21,17 @@ export class FeedbackService {
     private readonly repository: FeedbackRepository,
     private readonly productService: ProductService,
     private readonly usersService: UsersService,
+    private readonly purchasedProductsService: PurchasedProductsService,
   ) {}
 
   //create
   async create(userId: number, dto: CreateFeedbackDto) {
     await this.usersService.getOneUserByIdOrThrowError(userId);
     await this.productService.getProductByIdOrThrowError(dto.productId);
+    await this.purchasedProductsService.checkUserPurchaseOrThrowError(
+      userId,
+      dto.productId,
+    );
     await this.checkIsProductHasUserFeedbackOrThrowError(userId, dto.productId);
     return await this.repository.createFeedback(
       userId,
