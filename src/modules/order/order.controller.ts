@@ -15,11 +15,11 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { GetAllOrdersDto } from './dto/get-all-orders.dto';
 import { GetOneOrderDto } from './dto/get-one-order.dto';
 import { UpdateOrderDeliveryServiceDto } from './dto/update-order-delivery-service.dto';
-import { UpdateOrderTrackNoDto } from './dto/update-order-track-no.dto';
 import { UpdateUserAddressDto } from './dto/update-user-address.dto';
 import { OrderService } from './order.service';
 import { ApproveOrderDto } from './dto/approve-order.dto';
 import { CheckOrderPaymentDto } from './dto/check-order-payment.dto';
+import { SetOrderStatusSentForDeliveryDto } from './dto/set-order-status-sent-for-delivery.dto';
 
 @Controller('order')
 export class OrderController {
@@ -70,11 +70,11 @@ export class OrderController {
     return this.orderService.setDeliveryService(dto);
   }
 
-  @Patch('set_track_no')
+  @Patch('sent_for_delivery')
   @Roles(Role.ADMIN, Role.SUPERVISOR)
   @UseGuards(RolesGuard)
-  setTrackNo(@Body() dto: UpdateOrderTrackNoDto) {
-    return this.orderService.setTrackNo(dto);
+  setTrackNo(@Body() dto: SetOrderStatusSentForDeliveryDto) {
+    return this.orderService.setOrderStatusToSentForDelivery(dto);
   }
 
   @Patch('approve')
