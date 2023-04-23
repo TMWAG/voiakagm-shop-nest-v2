@@ -119,7 +119,17 @@ export class OrderRepository {
     });
   }
 
-  async setStatusToSentForDelivery(id: number): Promise<Order> {
+  async setStatusToSentForDelivery(
+    id: number,
+    trackNo: string,
+  ): Promise<Order> {
+    return await this.prisma.order.update({
+      where: { id },
+      data: { status: 'SENT_FOR_DELIVERY', trackNo },
+    });
+  }
+
+  async setStatusToDelivered(id: number): Promise<Order> {
     return await this.prisma.order.update({
       where: { id },
       data: { status: 'DELIVERED' },
