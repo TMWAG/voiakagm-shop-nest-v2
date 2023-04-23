@@ -1,19 +1,22 @@
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { OrderStatus, Prisma } from '@prisma/client';
 import { UsersAddressesService } from '../users-addresses/users-addresses.service';
 import { GetAllOrdersDto } from './dto/get-all-orders.dto';
 import { GetOneOrderDto } from './dto/get-one-order.dto';
 import { UpdateOrderDeliveryServiceDto } from './dto/update-order-delivery-service.dto';
-import { UpdateOrderTrackNoDto } from './dto/update-order-track-no.dto';
 import { UpdateUserAddressDto } from './dto/update-user-address.dto';
 import { OrderRepository } from './order.repository';
 import { TinkoffAcqService } from '../tinkoff-acq/tinkoff-acq.service';
 import { ApproveOrderDto } from './dto/approve-order.dto';
 import { CheckOrderPaymentDto } from './dto/check-order-payment.dto';
+import { PurchasedProductsService } from '../purchased-products/purchased-products.service';
+import { SetOrderStatusSentForDeliveryDto } from './dto/set-order-status-sent-for-delivery.dto';
+import { ConfirmOrderReceiptDto } from './dto/confirm-order-receipt.dto';
 
 @Injectable()
 export class OrderService {
@@ -21,6 +24,7 @@ export class OrderService {
     private readonly repository: OrderRepository,
     private readonly usersAddressesService: UsersAddressesService,
     private readonly tinkoffAcqService: TinkoffAcqService,
+    private readonly purchasedProductsService: PurchasedProductsService,
   ) {}
 
   //create
@@ -71,10 +75,6 @@ export class OrderService {
     );
   }
 
-  async setTrackNo(dto: UpdateOrderTrackNoDto) {
-    return await this.repository.setTrackNo(dto.id, dto.trackNo);
-  }
-
   async approve(dto: ApproveOrderDto) {
     const order = await this.getOneOrThrowError(dto.id);
     const response = await this.tinkoffAcqService.init(order);
@@ -91,9 +91,25 @@ export class OrderService {
     const order = await this.getOneOrThrowError(dto.id);
     const result = await this.tinkoffAcqService.checkOrder(order.id);
     if (result.Payments.some((payment) => payment.Status === 'CONFIRMED')) {
-      this.repository.setStatusToPaid(dto.id);
+      return this.repository.setStatusToPaid(dto.id);
     }
-    return await this.getOneOrThrowError(dto.id);
+    return order;
+  }
+
+  async setOrderStatusToSentForDelivery(dto: SetOrderStatusSentForDeliveryDto) {
+    return this.repository.setStatusToSentForDelivery(dto.id, dto.trackNo);
+  }
+
+  async confirmReceipt(userId: number, dto: ConfirmOrderReceiptDto) {
+    const order = await this.getOneOrThrowError(dto.id);
+    if (order.status !== OrderStatus.SENT_FOR_DELIVERY)
+      throw new BadRequestException('Данный заказ ещё не отправлен');
+    if (order.userId !== userId)
+      throw new BadRequestException('Данный заказ не числится за Вами');
+    order.orderedProducts.map((product) =>
+      this.purchasedProductsService.add(order.userId, product.product.id),
+    );
+    return this.repository.setStatusToDelivered(dto.id);
   }
 
   //utils
