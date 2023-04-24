@@ -20,11 +20,17 @@ import { OrderService } from './order.service';
 import { ApproveOrderDto } from './dto/approve-order.dto';
 import { CheckOrderPaymentDto } from './dto/check-order-payment.dto';
 import { SetOrderStatusSentForDeliveryDto } from './dto/set-order-status-sent-for-delivery.dto';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Orders')
 @Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Получение всех заказов с пагинацией и фильтрацией',
+  })
   @Get('all')
   @Roles(Role.ADMIN, Role.SUPERVISOR)
   @UseGuards(RolesGuard)
@@ -32,37 +38,62 @@ export class OrderController {
     return this.orderService.getAll(dto);
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary:
+      'Получение всех заказов пользователя по id для админа или супервайзера',
+  })
   @Get('user/:id')
   @Roles(Role.ADMIN, Role.SUPERVISOR)
   @UseGuards(RolesGuard)
   getOne(@Param() dto: GetOneOrderDto) {
-    return this.orderService.getOne(dto);
+    return this.orderService.getAllUser(dto.id);
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Получение всех заказов пользователя',
+  })
   @Get('my')
   @UseGuards(JwtAuthGuard)
   getAllUser(@Request() { user }) {
     return this.orderService.getAllUser(user.id);
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Получение текущего заказа пользователя',
+  })
   @Get('current')
   @UseGuards(JwtAuthGuard)
   getCurrent(@Request() { user }) {
     return this.orderService.createOrGetCurrent(user.id);
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Проверка оплаты товара',
+  })
   @Get('check_payment/:id')
   @UseGuards(JwtAuthGuard)
   checkOrderPayment(@Param() dto: CheckOrderPaymentDto) {
     return this.orderService.checkPayment(dto);
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Указание адреса доставки',
+  })
   @Patch('set_address')
   @UseGuards(JwtAuthGuard)
   setAddress(@Request() { user }, @Body() dto: UpdateUserAddressDto) {
     return this.orderService.setUserAddress(user.id, dto);
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Указание службы доставки',
+  })
   @Patch('delivery_service')
   @Roles(Role.ADMIN, Role.SUPERVISOR)
   @UseGuards(RolesGuard)
@@ -70,6 +101,10 @@ export class OrderController {
     return this.orderService.setDeliveryService(dto);
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Изменение статуса заказа на "Передан в доставку"',
+  })
   @Patch('sent_for_delivery')
   @Roles(Role.ADMIN, Role.SUPERVISOR)
   @UseGuards(RolesGuard)
@@ -77,6 +112,10 @@ export class OrderController {
     return this.orderService.setOrderStatusToSentForDelivery(dto);
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Подтверждение заказа, переход к оплате',
+  })
   @Patch('approve')
   @UseGuards(JwtAuthGuard)
   approve(@Body() dto: ApproveOrderDto) {
