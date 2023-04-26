@@ -30,8 +30,15 @@ export class OrderedProductsRepository {
   }
 
   //get
-  async getOne(id: number): Promise<OrderedProduct> {
-    return await this.prisma.orderedProduct.findFirst({ where: { id } });
+  async getOne(id: number) {
+    return await this.prisma.orderedProduct.findFirst({
+      where: { id },
+      include: {
+        order: {
+          select: { user: { select: { id: true } }, status: true },
+        },
+      },
+    });
   }
 
   //update
