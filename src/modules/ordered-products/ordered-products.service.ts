@@ -1,9 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { OrderService } from '../order/order.service';
 import { CreateOrderedProductDto } from './dto/create-ordered-product.dto';
 import { DeleteOrderedProductDto } from './dto/delete-ordered-product.dto';
 import { UpdateOrderedProductAmountDto } from './dto/update-ordered-product-amount.dto';
 import { OrderedProductsRepository } from './ordered-products.repository';
+import { OrderStatus } from '@prisma/client';
 
 @Injectable()
 export class OrderedProductsService {
@@ -28,14 +33,30 @@ export class OrderedProductsService {
   }
 
   //update
-  async updateAmount(dto: UpdateOrderedProductAmountDto) {
-    await this.getOneOrThrowError(dto.id);
+  async updateAmount(userId: number, dto: UpdateOrderedProductAmountDto) {
+    const orderedProduct = await this.getOneOrThrowError(dto.id);
+    if (orderedProduct.order.user.id !== userId)
+      throw new BadRequestException(
+        'Данный заказанный товар не числится за этим пользователем',
+      );
+    if (orderedProduct.order.status !== OrderStatus.NOT_APPROVED)
+      throw new BadRequestException(
+        'Количество товара можно менять только в текущем заказе',
+      );
     return await this.repository.updateAmount(dto.id, dto.amount);
   }
 
   //delete
-  async delete(dto: DeleteOrderedProductDto) {
-    await this.getOneOrThrowError(dto.id);
+  async delete(userId: number, dto: DeleteOrderedProductDto) {
+    const orderedProduct = await this.getOneOrThrowError(dto.id);
+    if (orderedProduct.order.user.id !== userId)
+      throw new BadRequestException(
+        'Заказанный товар не числится за этим пользователем',
+      );
+    if (orderedProduct.order.status !== OrderStatus.NOT_APPROVED)
+      throw new BadRequestException(
+        'Товары можно удалять только из текущей корзины',
+      );
     return await this.repository.delete(dto.id);
   }
 }
