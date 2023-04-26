@@ -146,6 +146,26 @@ export class OrderService {
           tgLink: true,
         },
       },
+      orderedProducts: {
+        select: {
+          amount: true,
+          product: {
+            select: {
+              id: true,
+              name: true,
+              price: true,
+              discount: true,
+              used: true,
+              pictures: {
+                take: 1,
+                select: {
+                  filename: true,
+                },
+              },
+            },
+          },
+        },
+      },
     };
     return searchOptions;
   }
