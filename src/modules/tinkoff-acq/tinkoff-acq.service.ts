@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Order, Vendor, Category, ProductPicture } from '@prisma/client';
+import { Order, Vendor, Category } from '@prisma/client';
 import { createHash } from 'crypto';
 
 @Injectable()
@@ -26,7 +26,9 @@ export class TinkoffAcqService {
           price: number;
           discount: number;
           used: boolean;
-          pictures: ProductPicture[];
+          pictures: {
+            filename: string;
+          }[];
         };
         amount: number;
       }[];
