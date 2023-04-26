@@ -97,6 +97,11 @@ export class OrderService {
   }
 
   async setOrderStatusToSentForDelivery(dto: SetOrderStatusSentForDeliveryDto) {
+    const order = await this.getOneOrThrowError(dto.id);
+    if (order.status !== OrderStatus.PAID)
+      throw new BadRequestException(
+        'Заказ ещё не оплачен или уже передан в доставку',
+      );
     return this.repository.setStatusToSentForDelivery(dto.id, dto.trackNo);
   }
 
