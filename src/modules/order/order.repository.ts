@@ -44,7 +44,12 @@ export class OrderRepository {
                 discount: true,
                 used: true,
                 amount: true,
-                pictures: { take: 1 },
+                pictures: {
+                  take: 1,
+                  select: {
+                    filename: true,
+                  },
+                },
               },
             },
             amount: true,
@@ -71,6 +76,9 @@ export class OrderRepository {
         userAddress: {
           select: { address: true },
         },
+        deliveryService: {
+          select: { name: true },
+        },
         orderedProducts: {
           include: {
             product: {
@@ -81,7 +89,13 @@ export class OrderRepository {
                 price: true,
                 amount: true,
                 discount: true,
-                pictures: { take: 1 },
+                used: true,
+                pictures: {
+                  take: 1,
+                  select: {
+                    filename: true,
+                  },
+                },
               },
             },
           },
