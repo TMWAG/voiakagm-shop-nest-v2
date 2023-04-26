@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CategoryEntity {
-  @ApiProperty()
+  @ApiProperty({ example: 1 })
   id: number;
-  @ApiProperty()
+  @ApiProperty({ example: 'Видеокарты' })
   name: string;
 }
