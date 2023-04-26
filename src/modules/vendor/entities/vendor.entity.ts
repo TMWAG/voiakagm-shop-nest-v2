@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class VendorEntity {
-  @ApiProperty()
+  @ApiProperty({ example: 1 })
   id: number;
-  @ApiProperty()
+  @ApiProperty({ example: 'MSI' })
   name: string;
 }
