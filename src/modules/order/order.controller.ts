@@ -21,6 +21,7 @@ import { ApproveOrderDto } from './dto/approve-order.dto';
 import { CheckOrderPaymentDto } from './dto/check-order-payment.dto';
 import { SetOrderStatusSentForDeliveryDto } from './dto/set-order-status-sent-for-delivery.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ConfirmOrderReceiptDto } from './dto/confirm-order-receipt.dto';
 
 @ApiTags('Orders')
 @Controller('order')
@@ -40,14 +41,13 @@ export class OrderController {
 
   @ApiBearerAuth()
   @ApiOperation({
-    summary:
-      'Получение всех заказов пользователя по id для админа или супервайзера',
+    summary: 'получение информации о заказе по id для админа или супервайзера',
   })
-  @Get('user/:id')
+  @Get('id/:id')
   @Roles(Role.ADMIN, Role.SUPERVISOR)
   @UseGuards(RolesGuard)
   getOne(@Param() dto: GetOneOrderDto) {
-    return this.orderService.getAllUser(dto.id);
+    return this.orderService.getOne(dto);
   }
 
   @ApiBearerAuth()
@@ -94,7 +94,7 @@ export class OrderController {
   @ApiOperation({
     summary: 'Указание службы доставки',
   })
-  @Patch('delivery_service')
+  @Patch('set_delivery_service')
   @Roles(Role.ADMIN, Role.SUPERVISOR)
   @UseGuards(RolesGuard)
   setDeliveryService(@Body() dto: UpdateOrderDeliveryServiceDto) {
@@ -120,5 +120,15 @@ export class OrderController {
   @UseGuards(JwtAuthGuard)
   approve(@Body() dto: ApproveOrderDto) {
     return this.orderService.approve(dto);
+  }
+
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Подтверждение получения заказа',
+  })
+  @Patch('confirm_receipt')
+  @UseGuards(JwtAuthGuard)
+  confirmReceipt(@Request() { user }, @Body() dto: ConfirmOrderReceiptDto) {
+    return this.orderService.confirmReceipt(user.id, dto);
   }
 }
