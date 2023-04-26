@@ -62,6 +62,35 @@ export class OrderRepository {
   async getCurrentByUserId(userId: number): Promise<Order | undefined> {
     return await this.prisma.order.findFirst({
       where: { userId, status: 'NOT_APPROVED' },
+      include: {
+        userAddress: {
+          select: { address: true },
+        },
+        deliveryService: {
+          select: { name: true },
+        },
+        orderedProducts: {
+          include: {
+            product: {
+              select: {
+                id: true,
+                name: true,
+                vendor: true,
+                price: true,
+                amount: true,
+                discount: true,
+                used: true,
+                pictures: {
+                  take: 1,
+                  select: {
+                    filename: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     });
   }
 
