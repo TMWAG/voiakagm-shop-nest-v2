@@ -42,7 +42,7 @@ export class UsersRepository {
   async getUserByEmail(email: string): Promise<User | never> {
     return await this.prisma.user.findFirst({
       where: { email },
-      select: this.select,
+      select: { ...this.select, token: true },
     });
   }
 
