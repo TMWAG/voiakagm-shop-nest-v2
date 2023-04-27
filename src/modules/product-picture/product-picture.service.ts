@@ -25,7 +25,6 @@ export class ProductPictureService {
         'products',
         String(dto.productId),
       );
-      console.log(filepath);
       try {
         await fs.access(filepath);
       } catch (error) {
