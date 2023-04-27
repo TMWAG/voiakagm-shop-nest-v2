@@ -6,13 +6,18 @@ import { GetAllParametersByCategoryId } from './dto/get-all-parameters-by-catego
 import { UpdateParameterCategoryByIdDto } from './dto/update-parameter-category.dto';
 import { UpdateParameterNameByIdDto } from './dto/update-parameter-name.dto';
 import { ParameterRepository } from './parameter.repository';
+import { CategoryService } from '../category/category.service';
 
 @Injectable()
 export class ParameterService {
-  constructor(private readonly repository: ParameterRepository) {}
+  constructor(
+    private readonly repository: ParameterRepository,
+    private readonly categoryService: CategoryService,
+  ) {}
 
   //create
   async createParameter(dto: CreateParameterDto) {
+    await this.categoryService.getCategoryByIdOrThrowError(dto.categoryId);
     return await this.repository.createParameter(dto.name, dto.categoryId);
   }
 
@@ -29,6 +34,7 @@ export class ParameterService {
   }
 
   async getAllParametersByCategoryId(dto: GetAllParametersByCategoryId) {
+    await this.categoryService.getCategoryByIdOrThrowError(dto.categoryId);
     return await this.repository.getAllParametersByCategoryId(dto.categoryId);
   }
 
@@ -40,6 +46,7 @@ export class ParameterService {
 
   async updateParameterCategoryById(dto: UpdateParameterCategoryByIdDto) {
     await this.getParameterByIdOrThrowError(dto.id);
+    await this.categoryService.getCategoryByIdOrThrowError(dto.categoryId);
     return await this.repository.updateParameterCategoryById(
       dto.id,
       dto.categoryId,
