@@ -14,12 +14,14 @@ import { UpdateProductNameDto } from './dto/update-product-name.dto';
 import { UpdateProductPriceDto } from './dto/update-product-price.dto';
 import { UpdateProductVendorDto } from './dto/update-product-vendor.dto';
 import { ProductRepository } from './product.repository';
+import { CategoryService } from '../category/category.service';
 
 @Injectable()
 export class ProductService {
   constructor(
     private readonly productRepository: ProductRepository,
     private readonly productPictureService: ProductPictureService,
+    private readonly categoryService: CategoryService,
   ) {}
 
   //create
@@ -61,6 +63,7 @@ export class ProductService {
 
   async updateProductCategory(dto: UpdateProductCategoryDto) {
     await this.getProductByIdOrThrowError(dto.id);
+    await this.categoryService.getCategoryByIdOrThrowError(dto.categoryId);
     return await this.productRepository.updateProductCategoryById(
       dto.id,
       dto.categoryId,
