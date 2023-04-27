@@ -15,6 +15,7 @@ import { UpdateProductPriceDto } from './dto/update-product-price.dto';
 import { UpdateProductVendorDto } from './dto/update-product-vendor.dto';
 import { ProductRepository } from './product.repository';
 import { CategoryService } from '../category/category.service';
+import { VendorService } from '../vendor/vendor.service';
 
 @Injectable()
 export class ProductService {
@@ -26,6 +27,7 @@ export class ProductService {
 
   //create
   async createProduct(dto: CreateProductDto) {
+    await this.categoryService.getCategoryByIdOrThrowError(dto.categoryId);
     return await this.productRepository.createProduct(
       dto.name,
       dto.vendorId,
