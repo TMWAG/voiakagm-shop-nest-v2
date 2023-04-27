@@ -51,16 +51,6 @@ export class ParameterController {
     return this.parameterService.createParameter(dto);
   }
 
-  @ApiOperation({ summary: 'Получение всех параметров' })
-  @ApiOkResponse({
-    description: 'Параметры успешно получены',
-    type: [ParameterCreateEntity],
-  })
-  @Get('all')
-  getAllParameters() {
-    return this.parameterService.getAllParameters();
-  }
-
   @ApiOperation({ summary: 'Получение всех параметров категории' })
   @ApiOkResponse({
     description: 'Параметры успешно получены',
