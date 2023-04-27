@@ -53,6 +53,13 @@ export class UsersRepository {
     });
   }
 
+  async getUserByTgLink(tgLink: string) {
+    return await this.prisma.user.findFirst({ where: { tgLink } });
+  }
+
+  async getUserByVkLink(vkLink: string) {
+    return await this.prisma.user.findFirst({ where: { vkLink } });
+  }
   async getAllUsers(): Promise<Partial<User>[]> {
     return await this.prisma.user.findMany({
       select: this.select,
