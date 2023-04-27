@@ -82,11 +82,21 @@ export class UsersService {
   }
 
   async updateUserVkLinkById(id: number, dto: AddVkLinkDto) {
+    const user = await this.repository.getUserByVkLink(dto.vkLink);
+    if (user)
+      throw new BadRequestException(
+        'Эта страница ВК уже привязана к другому профилю',
+      );
     await this.getOneUserByIdOrThrowError(id);
     return this.repository.updateUserVkLinkById(id, dto.vkLink);
   }
 
   async updateUserTgLinkById(id: number, dto: AddTgLinkDto) {
+    const user = await this.repository.getUserByTgLink(dto.tgLink);
+    if (user)
+      throw new BadRequestException(
+        'Эта ссылка уже привязана к другому профилю',
+      );
     await this.getOneUserByIdOrThrowError(id);
     return this.repository.updateUserTgLinkById(id, dto.tgLink);
   }
