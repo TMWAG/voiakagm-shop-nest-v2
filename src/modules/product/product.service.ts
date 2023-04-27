@@ -23,11 +23,13 @@ export class ProductService {
     private readonly productRepository: ProductRepository,
     private readonly productPictureService: ProductPictureService,
     private readonly categoryService: CategoryService,
+    private readonly vendorService: VendorService,
   ) {}
 
   //create
   async createProduct(dto: CreateProductDto) {
     await this.categoryService.getCategoryByIdOrThrowError(dto.categoryId);
+    await this.vendorService.getVendorByIdOrThrowError(dto.vendorId);
     return await this.productRepository.createProduct(
       dto.name,
       dto.vendorId,
@@ -74,6 +76,7 @@ export class ProductService {
 
   async updateProductVendor(dto: UpdateProductVendorDto) {
     await this.getProductByIdOrThrowError(dto.id);
+    await this.vendorService.getVendorByIdOrThrowError(dto.vendorId);
     return await this.productRepository.updateProductVendorById(
       dto.id,
       dto.vendorId,
