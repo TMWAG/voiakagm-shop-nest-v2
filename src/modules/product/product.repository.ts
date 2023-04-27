@@ -30,7 +30,17 @@ export class ProductRepository {
   async getProductById(id: number): Promise<Product> {
     return await this.prisma.product.findFirst({
       where: { id },
-      include: { category: true, vendor: true, pictures: true },
+      include: {
+        category: true,
+        vendor: true,
+        pictures: true,
+        characteristics: {
+          select: {
+            parameter: { select: { name: true } },
+            value: true,
+          },
+        },
+      },
     });
   }
 
