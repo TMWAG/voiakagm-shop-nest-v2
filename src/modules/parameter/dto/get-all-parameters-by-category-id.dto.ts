@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsInt } from 'class-validator';
+import { IsInt, IsOptional } from 'class-validator';
 import { dtoValidationError } from 'src/errors/dto.errors';
 
 export class GetAllParametersByCategoryId {
@@ -10,6 +10,7 @@ export class GetAllParametersByCategoryId {
     nullable: false,
   })
   @Type(() => Number)
+  @IsOptional()
   @IsInt({ message: dtoValidationError.type.int })
   readonly categoryId: number;
 }
