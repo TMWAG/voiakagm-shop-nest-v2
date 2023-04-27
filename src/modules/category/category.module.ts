@@ -15,5 +15,6 @@ import { JwtModule } from '@nestjs/jwt';
     }),
     PrismaModule,
   ],
+  exports: [CategoryService],
 })
 export class CategoryModule {}
