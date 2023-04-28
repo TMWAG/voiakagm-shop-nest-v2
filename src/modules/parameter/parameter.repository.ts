@@ -38,6 +38,13 @@ export class ParameterRepository {
   }
 
   //update
+  async updateParameterById(id: number, name?: string, categoryId?: number) {
+    return await this.prisma.productParameter.update({
+      where: { id },
+      data: { name, categoryId },
+    });
+  }
+
   async updateParameterNameById(
     id: number,
     name: string,
