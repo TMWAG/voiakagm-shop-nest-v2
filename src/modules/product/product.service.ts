@@ -6,13 +6,6 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { DeleteProductDto } from './dto/delete-product.dto';
 import { GetAllProductsDto } from './dto/get-all-products.dto';
 import { GetProductByIdDto } from './dto/get-product-by-id.dto';
-import { UpdateProductAmountDto } from './dto/update-product-amount.dto';
-import { UpdateProductCategoryDto } from './dto/update-product-category.dto';
-import { UpdateProductDescriptionDto } from './dto/update-product-description.dto';
-import { UpdateProductDiscountDto } from './dto/update-product-discount.dto';
-import { UpdateProductNameDto } from './dto/update-product-name.dto';
-import { UpdateProductPriceDto } from './dto/update-product-price.dto';
-import { UpdateProductVendorDto } from './dto/update-product-vendor.dto';
 import { ProductRepository } from './product.repository';
 import { CategoryService } from '../category/category.service';
 import { VendorService } from '../vendor/vendor.service';
@@ -74,58 +67,6 @@ export class ProductService {
       dto.description,
       dto.price,
       dto.discount,
-      dto.amount,
-    );
-  }
-
-  async updateProductName(dto: UpdateProductNameDto) {
-    await this.getProductByIdOrThrowError(dto.id);
-    return await this.productRepository.updateProductNameById(dto.id, dto.name);
-  }
-
-  async updateProductCategory(dto: UpdateProductCategoryDto) {
-    await this.getProductByIdOrThrowError(dto.id);
-    await this.categoryService.getCategoryByIdOrThrowError(dto.categoryId);
-    return await this.productRepository.updateProductCategoryById(
-      dto.id,
-      dto.categoryId,
-    );
-  }
-
-  async updateProductVendor(dto: UpdateProductVendorDto) {
-    await this.getProductByIdOrThrowError(dto.id);
-    await this.vendorService.getVendorByIdOrThrowError(dto.vendorId);
-    return await this.productRepository.updateProductVendorById(
-      dto.id,
-      dto.vendorId,
-    );
-  }
-
-  async updateProductDescription(dto: UpdateProductDescriptionDto) {
-    await this.getProductByIdOrThrowError(dto.id);
-    return await this.productRepository.updateProductDescriptionById(
-      dto.id,
-      dto.description,
-    );
-  }
-
-  async updateProductPrice(dto: UpdateProductPriceDto) {
-    await this.getProductByIdOrThrowError(dto.id);
-    return this.productRepository.updateProductPriceById(dto.id, dto.price);
-  }
-
-  async updateProductDiscount(dto: UpdateProductDiscountDto) {
-    await this.getProductByIdOrThrowError(dto.id);
-    return await this.productRepository.updateProductDiscountById(
-      dto.id,
-      dto.discount,
-    );
-  }
-
-  async updateProductAmountManually(dto: UpdateProductAmountDto) {
-    await this.getProductByIdOrThrowError(dto.id);
-    return await this.productRepository.updateProductAmountById(
-      dto.id,
       dto.amount,
     );
   }
