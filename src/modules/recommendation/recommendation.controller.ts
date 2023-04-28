@@ -99,7 +99,7 @@ export class RecommendationController {
   @ApiForbiddenResponse({
     description: 'Роль не соответствует заданным',
   })
-  @Patch('')
+  @Patch()
   @Roles(Role.ADMIN, Role.SUPERVISOR)
   @UseGuards(RolesGuard)
   @UseInterceptors(FileInterceptor('picture'))
