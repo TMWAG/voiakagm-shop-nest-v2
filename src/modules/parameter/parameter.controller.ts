@@ -12,6 +12,7 @@ import {
   ApiBadRequestResponse,
   ApiBearerAuth,
   ApiForbiddenResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
@@ -27,6 +28,7 @@ import { UpdateParameterCategoryByIdDto } from './dto/update-parameter-category.
 import { UpdateParameterNameByIdDto } from './dto/update-parameter-name.dto';
 import { ParameterCreateEntity } from './entities/parameter-create.entity';
 import { ParameterService } from './parameter.service';
+import { UpdateParameterDto } from './dto/update-parameter.dto';
 
 @ApiTags('Parameter')
 @Controller('parameter')
@@ -59,6 +61,33 @@ export class ParameterController {
   @Get('all')
   getAllParametersByCategoryId(@Query() dto: GetAllParametersByCategoryId) {
     return this.parameterService.getAllParametersByCategoryId(dto);
+  }
+
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Изменение названия параметра и/или категории',
+  })
+  @ApiOkResponse({
+    description: 'Параметр успешно изменён',
+    type: ParameterCreateEntity,
+  })
+  @ApiBadRequestResponse({
+    description: 'Не указан id',
+  })
+  @ApiNotFoundResponse({
+    description: 'Параметр или категория не найдены',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Нет токена авторизации',
+  })
+  @ApiForbiddenResponse({
+    description: 'Роль не соответствует заданным',
+  })
+  @Patch()
+  @Roles(Role.ADMIN, Role.SUPERVISOR)
+  @UseGuards(RolesGuard)
+  updateParameter(@Body() dto: UpdateParameterDto) {
+    return this.parameterService.updateParameterById(dto);
   }
 
   @ApiBearerAuth()
