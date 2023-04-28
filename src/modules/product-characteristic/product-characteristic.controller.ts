@@ -99,7 +99,7 @@ export class ProductCharacteristicController {
     description: 'Не найдена характеристика или параметр',
   })
   @ApiUnauthorizedResponse({ description: 'Нет токена авторизации' })
-  @Patch('update')
+  @Patch()
   @Roles(Role.ADMIN, Role.SUPERVISOR)
   @UseGuards(RolesGuard)
   update(@Body() dto: UpdateProductCharacteristicDto) {
