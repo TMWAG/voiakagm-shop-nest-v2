@@ -13,6 +13,7 @@ import {
   ApiBadRequestResponse,
   ApiBearerAuth,
   ApiForbiddenResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
@@ -35,6 +36,7 @@ import { UpdateProductVendorDto } from './dto/update-product-vendor.dto';
 import { CreateProductEntity } from './entities/create-product.entity';
 import { GetProductEntity } from './entities/get-product.entity';
 import { ProductService } from './product.service';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @ApiTags('Product')
 @Controller('product')
@@ -88,6 +90,33 @@ export class ProductController {
   @Get('id/:id')
   getOne(@Param() dto: GetProductByIdDto) {
     return this.productService.getProductById(dto);
+  }
+
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Изменение товара',
+  })
+  @ApiOkResponse({
+    description: 'Успешное изменение товара',
+    type: CreateProductEntity,
+  })
+  @ApiBadRequestResponse({
+    description: 'Не указан id и/или параметры имеют неверный формат',
+  })
+  @ApiNotFoundResponse({
+    description: 'Не найден производитель и/или категория',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Нет токена авторизации',
+  })
+  @ApiForbiddenResponse({
+    description: 'Роль не соответствует заданным',
+  })
+  @Patch()
+  @Roles(Role.ADMIN, Role.SUPERVISOR)
+  @UseGuards(RolesGuard)
+  updateProduct(@Body() dto: UpdateProductDto) {
+    return this.productService.updateProductById(dto);
   }
 
   @ApiBearerAuth()
