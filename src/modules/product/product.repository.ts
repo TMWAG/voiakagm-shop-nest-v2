@@ -45,6 +45,30 @@ export class ProductRepository {
   }
 
   //update
+  async updateProductById(
+    id: number,
+    name?: string,
+    vendorId?: number,
+    categoryId?: number,
+    description?: string,
+    price?: number,
+    discount?: number,
+    amount?: number,
+  ) {
+    return await this.prisma.product.update({
+      where: { id },
+      data: {
+        name,
+        vendorId,
+        categoryId,
+        description,
+        price,
+        discount,
+        amount,
+      },
+    });
+  }
+
   async updateProductNameById(id: number, name: string): Promise<Product> {
     return await this.prisma.product.update({
       where: { id },
