@@ -7,6 +7,7 @@ import { UpdateParameterCategoryByIdDto } from './dto/update-parameter-category.
 import { UpdateParameterNameByIdDto } from './dto/update-parameter-name.dto';
 import { ParameterRepository } from './parameter.repository';
 import { CategoryService } from '../category/category.service';
+import { UpdateParameterDto } from './dto/update-parameter.dto';
 
 @Injectable()
 export class ParameterService {
@@ -39,6 +40,17 @@ export class ParameterService {
   }
 
   //update
+  async updateParameterById(dto: UpdateParameterDto) {
+    await this.getParameterByIdOrThrowError(dto.id);
+    if (dto.categoryId)
+      await this.categoryService.getCategoryByIdOrThrowError(dto.categoryId);
+    return await this.repository.updateParameterById(
+      dto.id,
+      dto.name,
+      dto.categoryId,
+    );
+  }
+
   async updateParameterNameById(dto: UpdateParameterNameByIdDto) {
     await this.getParameterByIdOrThrowError(dto.id);
     return await this.repository.updateParameterNameById(dto.id, dto.name);
