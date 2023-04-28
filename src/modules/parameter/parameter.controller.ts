@@ -24,8 +24,6 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { CreateParameterDto } from './dto/create-parameter.dto';
 import { DeleteParameterDto } from './dto/delete-parameter.dto';
 import { GetAllParametersByCategoryId } from './dto/get-all-parameters-by-category-id.dto';
-import { UpdateParameterCategoryByIdDto } from './dto/update-parameter-category.dto';
-import { UpdateParameterNameByIdDto } from './dto/update-parameter-name.dto';
 import { ParameterCreateEntity } from './entities/parameter-create.entity';
 import { ParameterService } from './parameter.service';
 import { UpdateParameterDto } from './dto/update-parameter.dto';
@@ -88,39 +86,6 @@ export class ParameterController {
   @UseGuards(RolesGuard)
   updateParameter(@Body() dto: UpdateParameterDto) {
     return this.parameterService.updateParameterById(dto);
-  }
-
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Изменения названия параметра' })
-  @ApiOkResponse({
-    description: 'Название успешно изменено',
-    type: ParameterCreateEntity,
-  })
-  @ApiBadRequestResponse({
-    description: 'Не указан id параметра или новое название',
-  })
-  @ApiUnauthorizedResponse({ description: 'Нет токена авторизации' })
-  @ApiForbiddenResponse({ description: 'Роль не соответствует заданным' })
-  @Patch('name')
-  @Roles(Role.ADMIN, Role.SUPERVISOR)
-  @UseGuards(RolesGuard)
-  updateParameterName(@Body() dto: UpdateParameterNameByIdDto) {
-    return this.parameterService.updateParameterNameById(dto);
-  }
-
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Изменение категории параметра' })
-  @ApiOkResponse({ description: 'Категория успешно изменена' })
-  @ApiBadRequestResponse({
-    description: 'Не указан Id параметра или id категории',
-  })
-  @ApiUnauthorizedResponse({ description: 'Нет токена авторизации' })
-  @ApiForbiddenResponse({ description: 'Роль не соответствует заданным' })
-  @Patch('category')
-  @Roles(Role.ADMIN, Role.SUPERVISOR)
-  @UseGuards(RolesGuard)
-  updateParameterCategory(@Body() dto: UpdateParameterCategoryByIdDto) {
-    return this.parameterService.updateParameterCategoryById(dto);
   }
 
   @ApiBearerAuth()
