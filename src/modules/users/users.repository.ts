@@ -87,32 +87,6 @@ export class UsersRepository {
       select: this.select,
     });
   }
-  async updateUserNameById(id: number, name: string): Promise<User | never> {
-    return this.prisma.user.update({
-      where: { id },
-      data: { name },
-      select: this.select,
-    });
-  }
-
-  async updateUserSurnameById(
-    id: number,
-    surname: string,
-  ): Promise<User | never> {
-    return this.prisma.user.update({
-      where: { id },
-      data: { surname },
-      select: this.select,
-    });
-  }
-
-  async updateUserPhoneById(id: number, phone: string): Promise<User | never> {
-    return this.prisma.user.update({
-      where: { id },
-      data: { phone },
-      select: this.select,
-    });
-  }
 
   async updateUserRoleById(id: number, role: Role): Promise<User | never> {
     return this.prisma.user.update({
@@ -129,28 +103,6 @@ export class UsersRepository {
     return this.prisma.user.update({
       where: { id },
       data: { password },
-      select: this.select,
-    });
-  }
-
-  async updateUserTgLinkById(
-    id: number,
-    tgLink: string,
-  ): Promise<User | never> {
-    return await this.prisma.user.update({
-      where: { id },
-      data: { tgLink },
-      select: this.select,
-    });
-  }
-
-  async updateUserVkLinkById(
-    id: number,
-    vkLink: string,
-  ): Promise<User | never> {
-    return await this.prisma.user.update({
-      where: { id },
-      data: { vkLink },
       select: this.select,
     });
   }
