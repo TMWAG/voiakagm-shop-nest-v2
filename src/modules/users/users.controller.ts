@@ -30,6 +30,8 @@ import { UpdateUserRoleDto } from './dto/update-user-role.dto';
 import { UpdateUserSurnameDto } from './dto/update-user-surname.dto';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
+import { UpdateUserInfoDto } from './dto/update-user-info.dto';
+import { UpdateUserLinksDto } from './dto/update-user-links.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -48,6 +50,49 @@ export class UsersController {
   @UseGuards(RolesGuard)
   getAll() {
     return this.usersService.getAll();
+  }
+
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Изменение имени, фамилии, номера телефона' })
+  @ApiOkResponse({
+    description: 'Успешное изменение информации пользователя',
+    type: User,
+  })
+  @ApiBadRequestResponse({
+    description:
+      'Неверный формат данных или данные используются другими пользователями',
+  })
+  @ApiNotFoundResponse({
+    description: 'Пользователь не найден',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Нет токена или он просрочен',
+  })
+  @Patch('info')
+  @UseGuards(JwtAuthGuard)
+  updateUserInfo(@Request() { user }, @Body() dto: UpdateUserInfoDto) {
+    return this.usersService.updateUserInfoById(user.id, dto);
+  }
+
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Изменение ссылок на соцсети' })
+  @ApiOkResponse({
+    description: 'Успешное изменение ссылок пользователя',
+    type: User,
+  })
+  @ApiBadRequestResponse({
+    description: 'Ссылка/и принадлежат другому пользователю',
+  })
+  @ApiNotFoundResponse({
+    description: 'Пользователь не найден',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Нет токена авторизации или он просрочен',
+  })
+  @Patch('links')
+  @UseGuards(JwtAuthGuard)
+  updateUserLinks(@Request() { user }, @Body() dto: UpdateUserLinksDto) {
+    return this.usersService.updateUserLinks(user.id, dto);
   }
 
   @ApiBearerAuth()
