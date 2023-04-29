@@ -15,6 +15,8 @@ import { UpdateUserNameDto } from './dto/update-user-name.dto';
 import { UpdateUserSurnameDto } from './dto/update-user-surname.dto';
 import { UpdateUserPhoneDto } from './dto/update-user-phone.dto';
 import { DeleteUserDto } from './dto/delete-user.dto';
+import { UpdateUserInfoDto } from './dto/update-user-info.dto';
+import { UpdateUserLinksDto } from './dto/update-user-links.dto';
 
 @Injectable()
 export class UsersService {
@@ -59,16 +61,58 @@ export class UsersService {
   }
 
   //update
+  async updateUserInfoById(id: number, dto: UpdateUserInfoDto) {
+    await this.getOneUserByIdOrThrowError(id);
+    if (dto.phone) {
+      if (!(await this.isUserPhoneNew(dto.phone)))
+        throw new BadRequestException('Данный номер телефона уже используется');
+    }
+    return await this.repository.updateUserInfoById(
+      id,
+      dto.name,
+      dto.surname,
+      dto.phone,
+    );
+  }
+
+  async updateUserLinks(id: number, dto: UpdateUserLinksDto) {
+    await this.getOneUserByIdOrThrowError(id);
+    if (dto.tgLink) {
+      if (await this.repository.getUserByTgLink(dto.tgLink))
+        throw new BadRequestException('Эта ссылка уже используется');
+    }
+    if (dto.vkLink) {
+      if (await this.repository.getUserByVkLink(dto.vkLink))
+        throw new BadRequestException('Эта ссылка уже используется');
+    }
+    return await this.repository.updateUserLinksById(
+      id,
+      dto.vkLink,
+      dto.tgLink,
+    );
+  }
+
+  async updateUserPasswordById(id: number, dto: UpdateUserPasswordDto) {
+    if (dto.password !== dto.passwordConfirmation)
+      throw new BadRequestException('Пароли не совпадают');
+    await this.getOneUserByIdOrThrowError(id);
+    const newPassword = await bcrypt.hash(dto.password, 5);
+    return await this.repository.updateUserPasswordById(id, newPassword);
+  }
+
+  //
   async updateUserNameById(id: number, dto: UpdateUserNameDto) {
     await this.getOneUserByIdOrThrowError(id);
     return this.repository.updateUserNameById(id, dto.name);
   }
 
+  //
   async updateUserSurnameById(id: number, dto: UpdateUserSurnameDto) {
     await this.getOneUserByIdOrThrowError(id);
     return this.repository.updateUserSurnameById(id, dto.surname);
   }
 
+  //
   async updateUserPhoneById(id: number, dto: UpdateUserPhoneDto) {
     await this.getOneUserByIdOrThrowError(id);
     if (!(await this.isUserPhoneNew(dto.phone)))
@@ -108,14 +152,6 @@ export class UsersService {
   async updateUserTokenById(id: number) {
     const newToken = randomUUID();
     return await this.repository.updateUserTokenById(id, newToken);
-  }
-
-  async updateUserPasswordById(id: number, dto: UpdateUserPasswordDto) {
-    if (dto.password !== dto.passwordConfirmation)
-      throw new BadRequestException('Пароли не совпадают');
-    await this.getOneUserByIdOrThrowError(id);
-    const newPassword = await bcrypt.hash(dto.password, 5);
-    return await this.repository.updateUserPasswordById(id, newPassword);
   }
 
   //delete
