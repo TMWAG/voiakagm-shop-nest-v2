@@ -67,6 +67,26 @@ export class UsersRepository {
   }
 
   //update
+  async updateUserInfoById(
+    id: number,
+    name?: string,
+    surname?: string,
+    phone?: string,
+  ) {
+    return await this.prisma.user.update({
+      where: { id },
+      data: { name, surname, phone },
+      select: this.select,
+    });
+  }
+
+  async updateUserLinksById(id: number, vkLink?: string, tgLink?: string) {
+    return await this.prisma.user.update({
+      where: { id },
+      data: { vkLink, tgLink },
+      select: this.select,
+    });
+  }
   async updateUserNameById(id: number, name: string): Promise<User | never> {
     return this.prisma.user.update({
       where: { id },
