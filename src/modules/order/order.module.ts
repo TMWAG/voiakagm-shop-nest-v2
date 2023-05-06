@@ -7,6 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { UsersAddressesModule } from '../users-addresses/users-addresses.module';
 import { TinkoffAcqModule } from '../tinkoff-acq/tinkoff-acq.module';
 import { PurchasedProductsModule } from '../purchased-products/purchased-products.module';
+import { ProductModule } from '../product/product.module';
 
 @Module({
   providers: [OrderService, OrderRepository],
@@ -17,6 +18,7 @@ import { PurchasedProductsModule } from '../purchased-products/purchased-product
     UsersAddressesModule,
     TinkoffAcqModule,
     PurchasedProductsModule,
+    ProductModule,
   ],
   exports: [OrderService],
 })
