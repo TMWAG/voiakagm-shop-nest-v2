@@ -17,6 +17,7 @@ import { CheckOrderPaymentDto } from './dto/check-order-payment.dto';
 import { PurchasedProductsService } from '../purchased-products/purchased-products.service';
 import { SetOrderStatusSentForDeliveryDto } from './dto/set-order-status-sent-for-delivery.dto';
 import { ConfirmOrderReceiptDto } from './dto/confirm-order-receipt.dto';
+import { ProductService } from '../product/product.service';
 
 @Injectable()
 export class OrderService {
@@ -25,6 +26,7 @@ export class OrderService {
     private readonly usersAddressesService: UsersAddressesService,
     private readonly tinkoffAcqService: TinkoffAcqService,
     private readonly purchasedProductsService: PurchasedProductsService,
+    private readonly productService: ProductService,
   ) {}
 
   //create
@@ -82,6 +84,16 @@ export class OrderService {
       throw new InternalServerErrorException(response.Error);
     }
     this.repository.setStatusToAwaitingPayment(dto.id);
+    order.orderedProducts.forEach((orderedProduct) => {
+      this.productService.increaseSold(
+        orderedProduct.product.id,
+        orderedProduct.amount,
+      );
+      this.productService.decreaseAmount(
+        orderedProduct.product.id,
+        orderedProduct.amount,
+      );
+    });
     return {
       link: response.PaymentURL,
     };
