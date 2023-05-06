@@ -71,6 +71,18 @@ export class ProductService {
     );
   }
 
+  async decreaseAmount(productId: number, amount: number) {
+    const product = await this.getProductByIdOrThrowError(productId);
+    const newAmount = product.amount ? product.amount - amount : undefined;
+    this.productRepository.updateProductAmountById(productId, newAmount);
+  }
+
+  async increaseSold(productId: number, sold: number) {
+    const product = await this.getProductByIdOrThrowError(productId);
+    const newSoldCount = product.sold + sold;
+    this.productRepository.updateProductSoldById(productId, newSoldCount);
+  }
+
   async deleteProduct(dto: DeleteProductDto) {
     await this.getProductByIdOrThrowError(dto.id);
     await this.productPictureService.deleteAllProductPicturesByProductId(
