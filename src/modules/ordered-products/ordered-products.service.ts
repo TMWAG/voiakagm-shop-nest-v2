@@ -9,18 +9,21 @@ import { DeleteOrderedProductDto } from './dto/delete-ordered-product.dto';
 import { UpdateOrderedProductAmountDto } from './dto/update-ordered-product-amount.dto';
 import { OrderedProductsRepository } from './ordered-products.repository';
 import { OrderStatus } from '@prisma/client';
+import { ProductService } from '../product/product.service';
 
 @Injectable()
 export class OrderedProductsService {
   constructor(
     private readonly repository: OrderedProductsRepository,
     private readonly orderService: OrderService,
+    private readonly productService: ProductService,
   ) {}
 
   //create
   //add product to cart
   async create(userId: number, dto: CreateOrderedProductDto) {
     const order = await this.orderService.createOrGetCurrent(userId);
+    await this.productService.getProductByIdOrThrowError(dto.productId);
     return await this.repository.create(order.id, dto.productId, dto.amount);
   }
 
