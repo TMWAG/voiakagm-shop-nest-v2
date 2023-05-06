@@ -69,11 +69,17 @@ export class ProductRepository {
     });
   }
 
+  async updateProductAmountById(id: number, amount: number) {
+    return await this.prisma.product.update({
+      where: { id },
+      data: { amount },
+    });
+  }
+
   async updateProductSoldById(id: number, sold: number): Promise<Product> {
     return await this.prisma.product.update({
       where: { id },
       data: { sold },
-      include: { category: true, vendor: true },
     });
   }
 
