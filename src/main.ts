@@ -33,6 +33,7 @@ async function bootstrap() {
       },
     }),
   );
+  app.enableCors();
   await app.listen(port, () => console.log(`server started at ${port} port`));
 }
 bootstrap();
