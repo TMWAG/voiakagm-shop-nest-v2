@@ -6,8 +6,8 @@ import { PrismaService } from 'src/database/prisma.service';
 export class CategoryRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createCategory(name: string): Promise<Category> {
-    return await this.prisma.category.create({ data: { name } });
+  async createCategory(name: string, picture: string): Promise<Category> {
+    return await this.prisma.category.create({ data: { name, picture } });
   }
 
   async getAllCategories(): Promise<Category[]> {
@@ -18,11 +18,25 @@ export class CategoryRepository {
     return await this.prisma.category.findFirst({ where: { id } });
   }
 
-  async updateCategoryById(id: number, name: string): Promise<Category> {
-    return this.prisma.category.update({ where: { id }, data: { name } });
+  async updateCategoryById(
+    id: number,
+    name: string,
+    picture?: string,
+  ): Promise<Category> {
+    return this.prisma.category.update({
+      where: { id },
+      data: { name, picture },
+    });
   }
 
   async deleteCategoryById(id: number): Promise<Category> {
     return this.prisma.category.delete({ where: { id } });
+  }
+
+  async deleteCategoryPictureById(id: number): Promise<Category> {
+    return this.prisma.category.update({
+      where: { id },
+      data: { picture: null },
+    });
   }
 }
