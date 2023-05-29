@@ -5,7 +5,9 @@ import {
   Get,
   Patch,
   Post,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -24,6 +26,7 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { DeleteCategoryDto } from './dto/delete-category.dto';
 import { UpdateCategoryNameDto } from './dto/update-category-name.dto';
 import { CategoryEntity } from './entities/category.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Category')
 @Controller('category')
@@ -44,8 +47,12 @@ export class CategoryController {
   @Post('add')
   @Roles(Role.ADMIN, Role.SUPERVISOR)
   @UseGuards(RolesGuard)
-  createCategory(@Body() dto: CreateCategoryDto) {
-    return this.categoryService.createCategory(dto);
+  @UseInterceptors(FileInterceptor('picture'))
+  createCategory(
+    @Body() dto: CreateCategoryDto,
+    @UploadedFile() picture?: Express.Multer.File,
+  ) {
+    return this.categoryService.createCategory(dto, picture);
   }
 
   @ApiOperation({ summary: 'Получение всех категорий' })
@@ -70,8 +77,12 @@ export class CategoryController {
   @Patch('update')
   @Roles(Role.ADMIN, Role.SUPERVISOR)
   @UseGuards(RolesGuard)
-  updateCategoryName(@Body() dto: UpdateCategoryNameDto) {
-    return this.categoryService.updateCategoryNameById(dto);
+  @UseInterceptors(FileInterceptor('picture'))
+  updateCategoryName(
+    @Body() dto: UpdateCategoryNameDto,
+    @UploadedFile() picture?: Express.Multer.File,
+  ) {
+    return this.categoryService.updateCategory(dto, picture);
   }
 
   @ApiBearerAuth()
