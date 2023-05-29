@@ -95,6 +95,7 @@ model Vendor {
 model Category {
   id          Int         @default(autoincrement()) @id
   name        String      @map("category_name")
+  picture     String?     @map("category_picture")
   products    Product[]
   parameters  ProductParameter[]
   @@map("product_categories")
