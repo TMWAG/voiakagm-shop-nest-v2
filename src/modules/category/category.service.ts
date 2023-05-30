@@ -56,7 +56,7 @@ export class CategoryService {
   //delete
   async deleteCategoryById(dto: DeleteCategoryDto) {
     const category = await this.getCategoryByIdOrThrowError(dto.id);
-    await this.deleteCategoryPicture(category.id);
+    if (category.picture) this.deleteCategoryPicture(category.id);
     return await this.repository.deleteCategoryById(dto.id);
   }
 
