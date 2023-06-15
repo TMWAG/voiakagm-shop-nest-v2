@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -53,19 +54,24 @@ export class AuthService {
   }
 
   async login(dto: LoginUserByEmailDto) {
-    try {
-      const user = await this.usersService.getOneUserByEmailOrThrowError(
-        dto.email,
-      );
-      const payload = { id: user.id, email: user.email, role: user.role };
-      return {
-        access_token: this.jwtService.sign(payload, {
-          secret: process.env.SECRET_KEY,
-        }),
-      };
-    } catch (e) {
-      throw new InternalServerErrorException(e.message);
-    }
+    const user = await this.validateUser(dto.email, dto.password);
+    if (!user) throw new BadRequestException('Указан неверный пароль');
+    const payload = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      isActive: user.isActive,
+    };
+    return {
+      access_token: this.jwtService.sign(payload, {
+        secret: process.env.SECRET_KEY,
+      }),
+      id: user.id,
+      name: user.name,
+      role: user.role,
+      isActive: user.isActive,
+    };
   }
 
   async sendRestorationEmail(dto: RequestRestoreByEmailDto) {
@@ -92,12 +98,9 @@ export class AuthService {
   }
 
   //utils
-  async validateUser(
-    email: string,
-    pass: string,
-  ): Promise<Partial<User> | null> {
+  async validateUser(email: string, pass: string) {
     try {
-      const user = await this.usersService.getUserByEmail(email);
+      const user = await this.usersService.getOneUserByEmailOrThrowError(email);
       if (await bcrypt.compare(pass, user.password)) {
         const { password, ...rest } = user;
         return rest;
