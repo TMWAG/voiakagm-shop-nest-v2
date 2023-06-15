@@ -39,10 +39,10 @@ export class UsersRepository {
     });
   }
 
-  async getUserByEmail(email: string): Promise<User | never> {
+  async getUserByEmail(email: string) {
     return await this.prisma.user.findFirst({
       where: { email },
-      select: { ...this.select, token: true },
+      select: { ...this.select, token: true, password: true },
     });
   }
 
